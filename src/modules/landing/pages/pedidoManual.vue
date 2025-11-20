@@ -34,8 +34,20 @@
       </div>
       <!-- Formulario de pedido -->
       <form @submit.prevent="insertarPedido">
-        <label for="underline_select" class="sr-only">Cliente</label>
-       <input type="text" class="input w-60" placeholder="Nombre del cliente" v-model="cliente.nombre_empresa" />
+        <select
+          class="input w-60"
+          v-model="selectedEmpresa"
+          @change="obtenerProductosPorEmpresa"
+        >
+          <option value="">Selecciona un cliente</option>
+          <option
+            v-for="cliente in clientes"
+            :key="cliente.num_cliente"
+            :value="cliente"
+          >
+            {{ cliente.nombre_empresa }}
+          </option>
+        </select>
         <div class="flex flex-col md:flex-row gap-6">
           <!-- Detalles cliente -->
           <fieldset
@@ -45,58 +57,58 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label class="label">Impresión</label>
-                <input type="text" class="input w-full" placeholder="Impresión" v-model="cliente.impresion" />
+            <label class="label">Impresión</label>
+            <input type="text" class="input w-full" v-model="selectedEmpresa.impresion" readonly />
               </div>
               <div>
                 <label class="label">Razón social</label>
-                <input type="text" class="input w-full" placeholder="Razón social" v-model="cliente.razon_social" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.razon_social" readonly />
               </div>
               <div>
                 <label class="label">RFC</label>
-                <input type="text" class="input w-full" placeholder="RFC" v-model="cliente.rfc" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.rfc" readonly />
               </div>
               <div>
                 <label class="label">Email</label>
-                <input type="text" class="input w-full" placeholder="Email" v-model="cliente.email" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.email" readonly />
               </div>
               <div>
                 <label class="label">Teléfono</label>
-                <input type="text" class="input w-full" placeholder="Teléfono" v-model="cliente.telefono" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.telefono" readonly />
               </div>
               <div>
                 <label class="label">Régimen fiscal</label>
-                <input type="text" class="input w-full" placeholder="Régimen fiscal" v-model="cliente.regimen" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.regimen" readonly />
               </div>
               <div>
                 <label class="label">Estado</label>
-                <input type="text" class="input w-full" placeholder="Estado" v-model="cliente.estado" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.estado" readonly />
               </div>
               <div>
                 <label class="label">Colonia</label>
-                <input type="text" class="input w-full" placeholder="Colonia" v-model="cliente.colonia" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.colonia" readonly />
               </div>
               <div>
-                <label class="label">C.p.</label>
-                <input type="text" class="input w-full" placeholder="C.p." v-model="cliente.cp" />
+                <label class="label">C.P.</label>
+                <input type="text" class="input w-full" v-model="selectedEmpresa.cp" readonly />
               </div>
               <div>
                 <label class="label">Calle</label>
-                <input type="text" class="input w-full" placeholder="Calle" v-model="cliente.calle" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.calle" readonly />
               </div>
               <div>
                 <label class="label">Núm. exterior</label>
-                <input type="text" class="input w-full" placeholder="Núm. exterior" v-model="cliente.num_ext" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.num_ext" readonly />
               </div>
               <div>
                 <label class="label">Núm. interior</label>
-                <input type="text" class="input w-full" placeholder="Núm. interior" v-model="cliente.num_int" />
+                <input type="text" class="input w-full" v-model="selectedEmpresa.num_int" readonly />
               </div>
               <div>
-                <label class="label"> CFDI</label>
-                <input type="text" class="input w-full" placeholder="CFDI" v-model="cliente.cfdi" />
+                <label class="label">CFDI</label>
+                <input type="text" class="input w-full" v-model="selectedEmpresa.cfdi" readonly />
               </div>
-            </div>
+              </div>
           </fieldset>
 
           <!-- Número de pedido y fecha -->
@@ -106,111 +118,174 @@
           </div>
         </div>
 
-        <fieldset class="bg-gray-100 rounded-lg shadow-md w-full p-4 border border-gray-300">
-  <legend class="fieldset-legend text-lg font-semibold">Detalles pedido</legend>
-
-  <div class="flex flex-col gap-2">
-     <!-- No. identifacion -->
-      <div class="flex-1 w-[90px]">
+     <fieldset class="bg-gray-100 rounded-lg shadow-md w-full p-4 border border-gray-300">
+    <legend class="fieldset-legend text-lg font-semibold">Detalles pedido</legend>
+    <div class="flex-1 w-[90px]">
         <label class="label">No. identificación</label>
         <input type="text" class="input w-full" v-model="numeroIdentificacion" />
       </div>
-    <div
-      class="flex flex-nowrap gap-2 overflow-x-auto"
-      v-for="(producto, index) in productos"
-      :key="producto.id"
-    >
-      <!-- Cantidad pequeño -->
+    <!-- FORMULARIO -->
+    <div class="flex flex-nowrap gap-2 overflow-x-auto mb-4">
+      <!-- No. identifacion -->
+
+      <!-- Cantidad -->
       <div class="flex-1 min-w-[80px]">
         <label class="label">Cantidad</label>
-        <input type="text" class="input w-full" v-model="producto.cantidad" />
+        <input
+          type="number"
+          class="input w-full"
+          v-model="cantidad"
+          @input="obtenerPrecioFinal"
+        />
       </div>
 
-      <!-- Producto amplio -->
+      <!-- Producto -->
       <div class="flex-1 min-w-[200px]">
         <label class="label">Producto</label>
-        <input type="text" class="input w-full" :value="producto.producto" readonly />
+        <select
+          class="input w-full"
+          v-model="selectedProducto"
+          @change="obtenerTintasPorProducto"
+        >
+          <option value="">Selecciona un producto</option>
+          <option
+            v-for="producto in productosEmpresa"
+            :key="producto.identificador"
+            :value="producto"
+          >
+            {{ producto.producto }}
+          </option>
+        </select>
       </div>
 
-      <!-- Medidas amplio -->
+      <!-- Medidas -->
       <div class="flex-1 min-w-[160px]">
         <label class="label">Medidas</label>
-        <input type="text" class="input w-full" :value="producto.medidas" readonly />
+        <input
+          type="text"
+          class="input w-full"
+          :value="selectedProducto ? `${selectedProducto.ancho_int} x ${selectedProducto.largo_int} x ${selectedProducto.alto_int}` : ''"
+          readonly
+        />
       </div>
 
-      <!-- Tintas amplio -->
+      <!-- Tintas -->
       <div class="flex-1 min-w-[200px]">
         <label class="label">Tintas</label>
         <input
           type="text"
           class="input w-full"
-          :value="producto.tintas.map(t => `${t.gcmi}-${t.nombre_tinta}`).join(', ')"
+          :value="tintasProducto.length ? tintasProducto.map(t => `${t.gcmi}-${t.nombre_tinta}`).join(', ') : ''"
           readonly
         />
       </div>
 
-      <!-- Tipo material amplio -->
+      <!-- Tipo material -->
       <div class="flex-1 min-w-[150px]">
         <label class="label">Tipo material</label>
-        <input type="text" class="input w-full" :value="producto.material_tipo" readonly />
+        <input type="text" class="input w-full" :value="selectedProducto?.material_tipo" readonly />
       </div>
 
-      <!-- Material mediano -->
+      <!-- Material -->
       <div class="flex-1 min-w-[110px]">
         <label class="label">Material</label>
-        <input type="text" class="input w-full" :value="producto.material_nombre" readonly />
+        <input type="text" class="input w-full" :value="selectedProducto?.nombre_material" readonly />
       </div>
 
-      <!-- Flauta pequeño -->
+      <!-- Flauta -->
       <div class="flex-1 min-w-[60px]">
         <label class="label">Flauta</label>
-        <input type="text" class="input w-full" :value="producto.material_flauta" readonly />
+        <input type="text" class="input w-full" :value="selectedProducto?.material_flauta" readonly />
       </div>
 
-      <!-- ETC pequeño -->
+      <!-- ETC -->
       <div class="flex-1 min-w-[60px]">
         <label class="label">ETC</label>
-        <input type="text" class="input w-full" :value="producto.resistencia" readonly />
+        <input type="text" class="input w-full" :value="selectedProducto?.material_resistencia" readonly />
       </div>
 
-      <!-- Calibre pequeño -->
+      <!-- Calibre -->
       <div class="flex-1 min-w-[60px]">
         <label class="label">Calibre</label>
-        <input type="text" class="input w-full" :value="producto.calibre" readonly />
+        <input type="text" class="input w-full" :value="selectedProducto?.material_calibre" readonly />
       </div>
 
-      <!-- Peso pequeño -->
+      <!-- Peso -->
       <div class="flex-1 min-w-[60px]">
         <label class="label">Peso</label>
-        <input type="text" class="input w-full" :value="producto.peso" readonly />
+        <input type="text" class="input w-full" :value="selectedProducto?.material_peso" readonly />
       </div>
 
-      <!-- Precio Unitario mediano -->
+      <!-- Precio Unitario -->
       <div class="flex-1 min-w-[100px]">
         <label class="label">P/Unitario</label>
-        <input type="text" class="input w-full" v-model="producto.precio_final" />
+        <input
+          type="text"
+          class="input w-full"
+          v-model="precioUnitario"
+        />
       </div>
 
-      <!-- Importe mediano -->
+      <!-- Importe -->
       <div class="flex-1 min-w-[120px]">
         <label class="label">Importe</label>
-        <input type="text" class="input w-full" :value="formatoMoneda(producto.cantidad * producto.precio_final)" readonly />
+        <input
+          type="text"
+          class="input w-full"
+          :value="importe"
+          readonly
+        />
       </div>
 
-      <div class="flex-none flex items-center justify-center p-1">
-    <button
-      type="button"
-      class="flex items-center self-center text-white bg-red-700 hover:bg-red-800 font-medium rounded-md text-sm px-3 py-2"
-      @click="eliminarProducto(index)"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-      <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
-    </svg>
-    </button>
-  </div>
+      <!-- Botón agregar -->
+      <div  class="p-0.5 flex items-center justify-start">
+        <button
+          type="button"
+          class="bg-blue-500 text-white px-3 py-1 rounded"
+          @click="agregarProducto"
+        >
+        +
+        </button>
+      </div>
     </div>
-  </div>
-</fieldset>
+
+    <!-- TABLA DE PRODUCTOS -->
+    <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-2 py-1 border">Cantidad</th>
+          <th class="px-2 py-1 border">Producto</th>
+          <th class="px-2 py-1 border">Medidas</th>
+          <th class="px-2 py-1 border">Tintas</th>
+          <th class="px-2 py-1 border">Tipo material</th>
+          <th class="px-2 py-1 border">Material</th>
+          <th class="px-2 py-1 border">Flauta</th>
+          <th class="px-2 py-1 border">ETC</th>
+          <th class="px-2 py-1 border">Calibre</th>
+          <th class="px-2 py-1 border">Peso</th>
+          <th class="px-2 py-1 border">P/Unitario</th>
+          <th class="px-2 py-1 border">Importe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in productosAgregados" :key="index">
+          <td class="px-2 py-1 border text-center">{{ item.cantidad }}</td>
+          <td class="px-2 py-1 border">{{ item.producto }}</td>
+          <td class="px-2 py-1 border">{{ item.medidas }}</td>
+          <td class="px-2 py-1 border">{{ item.tintas }}</td>
+          <td class="px-2 py-1 border">{{ item.material_tipo }}</td>
+          <td class="px-2 py-1 border">{{ item.nombre_material }}</td>
+          <td class="px-2 py-1 border text-center">{{ item.material_flauta }}</td>
+          <td class="px-2 py-1 border text-center">{{ item.material_resistencia }}</td>
+          <td class="px-2 py-1 border text-center">{{ item.material_calibre }}</td>
+          <td class="px-2 py-1 border text-center">{{ item.material_peso }}</td>
+          <td class="px-2 py-1 border text-center">{{ item.precioUnitario }}</td>
+          <td class="px-2 py-1 border text-center">{{ item.importe }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+
 
 
         <!-- ============================================================================================================================== -->
@@ -258,36 +333,34 @@
                 </datalist>
               </div>
 
-  <!-- Entregar en -->
-  <div class="col-span-2 flex flex-col">
-    <label class="label mb-1">Entregar en:</label>
-    <select
-      v-model="entrega"
-      class="border border-black w-full rounded-md px-3 py-2 text-base bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-    >
-      <option value="">Selecciona una opción</option>
-      <option value="Local">Local</option>
-      <option value="Paquetería">Paquetería</option>
-      <option value="Cliente recoge">Cliente recoge</option>
-    </select>
-  </div>
+                <!-- Entregar en -->
+                <div class="col-span-2 flex flex-col">
+                  <label class="label mb-1">Entregar en:</label>
+                  <select
+                    v-model="entrega"
+                    class="border border-black w-full rounded-md px-3 py-2 text-base bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  >
+                    <option value="">Selecciona una opción</option>
+                    <option value="Local">Local</option>
+                    <option value="Paquetería">Paquetería</option>
+                    <option value="Cliente recoge">Cliente recoge</option>
+                  </select>
+                </div>
 
-  <!-- Condiciones de pago -->
-  <div class="col-span-2 flex flex-col">
-    <label class="label mb-1">Condiciones de pago</label>
-    <select
-      v-model="condicionPago"
-      class="border border-black w-full rounded-md px-3 py-2 text-base bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-    >
-      <option value="Contado">Contado</option>
-      <option value="Crédito 30">Crédito 30</option>
-      <option value="Crédito 45">Crédito 45</option>
-      <option value="Crédito 60">Crédito 60</option>
-    </select>
-  </div>
-</div>
-
-
+                <!-- Condiciones de pago -->
+                <div class="col-span-2 flex flex-col">
+                  <label class="label mb-1">Condiciones de pago</label>
+                  <select
+                    v-model="condicionPago"
+                    class="border border-black w-full rounded-md px-3 py-2 text-base bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  >
+                    <option value="Contado">Contado</option>
+                    <option value="Crédito 30">Crédito 30</option>
+                    <option value="Crédito 45">Crédito 45</option>
+                    <option value="Crédito 60">Crédito 60</option>
+                  </select>
+                </div>
+              </div>
               </fieldset>
 
             </div>
@@ -295,80 +368,80 @@
 
             <!-- Tabla de totales -->
           <div class="w-1/5 bg-gray-100 rounded-lg shadow-md p-4 border border-gray-300 ml-auto">
-  <table class="table-auto w-full">
-    <tbody>
-      <tr class="border-b border-gray-300">
-        <td class="py-2 pr-3 text-right font-medium">Subtotal:</td>
-        <td class="py-2">
-          <input
-            :value="formatoMoneda(subtotal)"
-            type="text"
-            class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
-            placeholder="0.00"
-            readonly
-          />
-        </td>
-      </tr>
+          <table class="table-auto w-full">
+            <tbody>
+              <tr class="border-b border-gray-300">
+                <td class="py-2 pr-3 text-right font-medium">Subtotal:</td>
+                <td class="py-2">
+                  <input
+                    :value="formatoMoneda(subtotal)"
+                    type="text"
+                    class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    placeholder="0.00"
+                    readonly
+                  />
+                </td>
+              </tr>
 
-      <tr class="border-b border-gray-300">
-        <td class="py-2 pr-3 text-right font-medium">IVA:</td>
-        <td class="py-2">
-          <input
-  :value="formatoMoneda(iva)"
-  type="text"
-  class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
-  readonly
-/>
+              <tr class="border-b border-gray-300">
+                <td class="py-2 pr-3 text-right font-medium">IVA:</td>
+                <td class="py-2">
+                  <input
+                    :value="formatoMoneda(iva)"
+                    type="text"
+                    class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
+                    readonly
+                  />
 
-        </td>
-      </tr>
+                </td>
+              </tr>
 
-      <tr class="border-b border-gray-300">
-        <td class="py-2 pr-3 text-right font-medium">Total:</td>
-        <td class="py-2">
-          <input
-            :value="formatoMoneda(total)"
-            type="text"
-            class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
-            readonly
-          />
-        </td>
-      </tr>
+              <tr class="border-b border-gray-300">
+                <td class="py-2 pr-3 text-right font-medium">Total:</td>
+                <td class="py-2">
+                  <input
+                    :value="formatoMoneda(total)"
+                    type="text"
+                    class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
+                    readonly
+                  />
+                </td>
+              </tr>
 
-      <tr class="border-b border-gray-300">
-        <td class="py-2 pr-3 text-right font-medium">Anticipo:</td>
-        <td class="py-2">
-         <input
-          type="text"
-          class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
-          :value="formatoMoneda(anticipoMinimo)"
+              <tr class="border-b border-gray-300">
+                <td class="py-2 pr-3 text-right font-medium">Anticipo:</td>
+                <td class="py-2">
+                <input
+                  type="text"
+                  class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  :value="formatoMoneda(anticipoMinimo)"
 
-         />
+                />
 
-        </td>
-      </tr>
+                </td>
+              </tr>
 
-      <tr>
-        <td class="py-2 pr-3 text-right font-medium">Saldo:</td>
-        <td class="py-2">
-          <input
-            :value="formatoMoneda(saldo)"
-            type="text"
-            class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
-            readonly
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+              <tr>
+                <td class="py-2 pr-3 text-right font-medium">Saldo:</td>
+                <td class="py-2">
+                  <input
+                    :value="formatoMoneda(saldo)"
+                    type="text"
+                    class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
+                    readonly
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
           </div>
 
           </div>
           <div class="flex justify-end mt-4">
-    <button
-      class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-md text-xs px-2 py-1 text-center"
-      type="submit"
-    >
+          <button
+          class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-md text-xs px-2 py-1 text-center"
+          type="submit"
+          >
       Generar Pedido
     </button>
           </div>
@@ -379,39 +452,19 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, watch} from 'vue'
 import axios from 'axios'
 import jsPDF from 'jspdf'
-
-
-const route = useRoute()
 
 const condicionPago = ref('Contado')
 const metodoPago = ref('Transferencia')
 const entrega = ref('Local')
 const observaciones = ref('')
+const cantidad = ref('');
+const precioUnitario = ref('');
+const importe = ref('');
+const productosAgregados = ref([])
 const numeroIdentificacion = ref('')
-
-
-const cotizacion = ref(null)
-const productos = ref([])
-const cliente = ref({
-  nombre_empresa: '',
-  impresion: '',
-  razon_social: '',
-  rfc: '',
-  email: '',
-  telefono: '',
-  regimen: '',
-  estado: '',
-  colonia: '',
-  cp: '',
-  calle: '',
-  num_ext: '',
-  num_int: '',
-  cfdi: ''
-})
 
 
 function mostrarAlerta(tipo, mensaje) {
@@ -443,64 +496,135 @@ function mostrarAlerta(tipo, mensaje) {
   }, 3000);
 }
 
-const eliminarProducto = (index) => {
-  productos.value.splice(index, 1)
-  console.log("Producto eliminado en el índice:", index)
+const clientes = ref([])
+const selectedEmpresa = ref({})
+const productosEmpresa = ref([])
+const selectedProducto = ref('')
+const tintasProducto = ref([]);
+
+
+const obtenerClientes = async () => {
+  try {
+    const res = await axios.get('http://localhost:3000/api/clientes')
+    clientes.value = res.data
+  } catch (error) {
+    console.error('Error al obtener clientes:', error)
+  }
 }
 
-
-const cargarDatos = async () => {
-  try {
-    const idCotizacion = route.params.id
-    if (!idCotizacion) {
-      console.error("No se recibió id de cotización en la ruta")
-      return
-    }
-
-    // Obtener la cotización
-    const { data: cot } = await axios.get(
-      `http://localhost:3000/api/buscarTabla/cotizaciones/${idCotizacion}`
-    )
-
-    if (!cot) {
-      console.warn("No se encontró la cotización con id:", idCotizacion)
-      return
-    }
-
-    cotizacion.value = cot  // ¡ya es un objeto!
-    console.log("Cotización cargada:", cotizacion.value)
-
-    // Obtener los productos de la cotización
-    const { data: det } = await axios.get(
-  `http://localhost:3000/api/detalleCotizaciones/${idCotizacion}`
-    )
-    productos.value = det
-    console.log("Productos cargados:", productos.value)
-
-
-    // Validar num_cliente
-    const numCliente = String(cotizacion.value.num_cliente || "").trim()
-    if (!numCliente) {
-      console.error("num_cliente no definido en la cotización:", cotizacion.value)
-      return
-    }
-
-    // Obtener el cliente asociado a la cotización
-    const { data: cli } = await axios.get(`http://localhost:3000/api/clientes/${numCliente}`)
-
-    if (cli && cli.length > 0) {
-      cliente.value = cli[0]
-      console.log("Cliente cargado:", cliente.value)
-    } else {
-      console.warn("No se encontró el cliente con num_cliente:", numCliente)
-    }
-  } catch (error) {
-    console.error("Error al cargar datos de cotización o cliente:", error)
+const obtenerProductosPorEmpresa = async () => {
+  if (!selectedEmpresa.value || !selectedEmpresa.value.num_cliente) {
+    productosEmpresa.value = [];
+    return;
   }
 
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/api/productos/empresa/${selectedEmpresa.value.num_cliente}`
+    );
+    productosEmpresa.value = res.data;
+
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
+  }
+};
 
 
+
+
+async function obtenerTintasPorProducto() {
+  if (!selectedProducto.value || !selectedProducto.value.identificador) return;
+
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/api/productos/tintas/${selectedProducto.value.identificador}`
+    );
+    tintasProducto.value = res.data;
+    console.log('Tintas del producto:', tintasProducto.value);
+  } catch (error) {
+    console.error('Error al obtener tintas:', error);
+    tintasProducto.value = [];
+  }
 }
+
+
+
+const obtenerPrecioFinal = async () => {
+  if (!selectedProducto.value?.identificador || !cantidad.value) return;
+
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/api/detalle_cotizaciones/${selectedProducto.value.identificador}/${cantidad.value}`
+    );
+
+    if (!res.data || !res.data.precio_final) {
+      precioUnitario.value = '';
+      importe.value = '';
+      return;
+    }
+
+
+    precioUnitario.value = parseFloat(res.data.precio_final).toFixed(2);
+    importe.value = (cantidad.value * precioUnitario.value).toFixed(2);
+
+  } catch (error) {
+    console.error("❌ Error al obtener precio_final:", error);
+    precioUnitario.value = '';
+    importe.value = '';
+  }
+};
+
+watch([cantidad, precioUnitario], () => {
+  importe.value = (cantidad.value * precioUnitario.value).toFixed(2) || 0;
+});
+
+
+// Agregar producto a la tabla
+const agregarProducto = () => {
+
+  console.log("🧠 selectedProducto:", selectedProducto.value)
+
+  if (!selectedProducto.value || !cantidad.value || !precioUnitario.value) {
+    alert('⚠️ Debes seleccionar un producto y cantidad válidos.')
+    return
+  }
+
+  productosAgregados.value.push({
+    id_producto: selectedProducto.value.identificador,
+    cantidad: cantidad.value,
+    producto: selectedProducto.value.producto,
+    medidas: `${selectedProducto.value.ancho_int} x ${selectedProducto.value.largo_int} x ${selectedProducto.value.alto_int}`,
+    tintas: tintasProducto.value.length
+      ? tintasProducto.value.map(t => `${t.gcmi}-${t.nombre_tinta}`).join(', ')
+      : '',
+    material_tipo: selectedProducto.value.material_tipo,
+    nombre_material: selectedProducto.value.nombre_material,
+    material_flauta: selectedProducto.value.material_flauta,
+    material_resistencia: selectedProducto.value.material_resistencia,
+    material_calibre: selectedProducto.value.material_calibre,
+    material_peso: selectedProducto.value.material_peso,
+    precioUnitario: precioUnitario.value,
+    importe: importe.value
+  })
+
+  // 🧩 Verifica en consola qué se está agregando
+  console.log("🧾 Producto agregado:", productosAgregados.value)
+
+
+    // 🔹 Recalcular subtotal
+  subtotal.value = productosAgregados.value.reduce(
+    (total, item) => total + Number(item.importe || 0),
+    0
+  )
+
+  // Limpiar formulario
+  cantidad.value = ''
+  selectedProducto.value = null
+  tintasProducto.value = []
+  precioUnitario.value = ''
+  importe.value = ''
+}
+
 
 
 const fechaActual = new Date().toISOString().substring(0, 10)
@@ -549,20 +673,6 @@ const iva = computed(() => {
 
 
 
-
-
-watch(productos, () => {
-  subtotal.value = productos.value.reduce((acc, p) => {
-    const cantidad = Number(p.cantidad) || 0
-    const precio = Number(p.precio_final) || 0
-    return acc + cantidad * precio
-  }, 0)
-}, { deep: true })
-
-
-
-
-
 const total = computed(() => subtotal.value + iva.value)
 const saldo = computed(() => {
   return total.value - anticipo.value
@@ -591,41 +701,39 @@ const status = computed(() => {
 
 const insertarPedido = async () => {
   try {
-    if (!cliente.value || !productos.value.length) {
+    if (!selectedEmpresa.value || !productosAgregados.value.length) {
       mostrarAlerta("danger", "Faltan datos del cliente o productos");
       return;
     }
 
     const payload = {
-      num_cliente: cliente.value.num_cliente,
+      num_cliente: selectedEmpresa.value.num_cliente,
       fecha: fechaActual,
       observaciones: observaciones.value || "",
-      anticipo: Number(anticipo.value),
-      iva: Number(iva.value),
-      subtotal: Number(subtotal.value),
-      total: Number(total.value),
+      anticipo: Number(anticipo.value) || 0,
+      iva: Number(iva.value) || 0,
+      subtotal: Number(subtotal.value) || 0,
+      total: Number(total.value) || 0,
       metodoPago: metodoPago.value || "",
       entrega: entrega.value || "",
       condicionesPago: condicionPago.value || "",
       status: status.value,
       formaPago: "Anticipo",
       numeroIdentificacion: numeroIdentificacion.value || "",
-      productos: productos.value.map(p => ({
-        idProducto: p.id_producto,
-        cantidad: p.cantidad,
-        importe: Number(p.cantidad) * Number(p.precio_final)
-      }))
+      productos: productosAgregados.value.map(p => ({
+      idProducto: p.id_producto,
+      cantidad: Number(p.cantidad),
+      importe: Number(p.importe)
+}))
     };
+
+    console.log("📦 Payload final:", JSON.stringify(payload, null, 2));
 
     const { data } = await axios.post("http://localhost:3000/api/pedidos/insertar", payload);
 
-    console.log("✅ Pedido insertado:", data);
-    mostrarAlerta("success", `Pedido creado correctamente. No. pedido: ${data.no_pedido}`);
-    generarPDF(data.no_pedido)
-
-    // Si quieres limpiar el formulario o redirigir:
-    // resetFormulario();
-    // router.push("/pedidos");
+    console.log("Pedido insertado:", data);
+    mostrarAlerta("success", `Pedido creado correctamente.`);
+    generarPDF(data.no_pedido);
 
   } catch (error) {
     console.error("❌ Error al insertar pedido:", error);
@@ -716,15 +824,15 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
 
     yPosition += 7
 
-    // Validar y asegurar que los valores sean strings
-    const razonSocial = String(cliente.value.razon_social || '')
-    const nombreEmpresa = String(cliente.value.nombre_empresa || '')
-    const telefono = String(cliente.value.telefono || '')
-    const email = String(cliente.value.email || '')
-    const numCliente = String(cliente.value.num_cliente || '')
-    const rfc = String(cliente.value.rfc || '')
-    const estado = String(cliente.value.estado || '')
-    const regimen = String(cliente.value.regimen || '')
+        // Validar y asegurar que los valores sean strings
+    const razonSocial = String(selectedEmpresa.value.razon_social || '')
+    const nombreEmpresa = String(selectedEmpresa.value.nombre_empresa || '')
+    const telefono = String(selectedEmpresa.value.telefono || '')
+    const email = String(selectedEmpresa.value.email || '')
+    const numCliente = String(selectedEmpresa.value.num_cliente || '')
+    const rfc = String(selectedEmpresa.value.rfc || '')
+    const estado = String(selectedEmpresa.value.estado || '')
+    const regimen = String(selectedEmpresa.value.regimen || '')
 
     doc.setFont('helvetica', 'bold')
     doc.text('Razón Social:', 12, yPosition)
@@ -741,10 +849,10 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
     yPosition += 5
 
     // Construir domicilio completo
-    const calle = String(cliente.value.calle || '')
-    const numExt = String(cliente.value.num_ext || '')
-    const numInt = String(cliente.value.num_int || '')
-    const colonia = String(cliente.value.colonia || '')
+    const calle = String(selectedEmpresa.value.calle || '')
+    const numExt = String(selectedEmpresa.value.num_ext || '')
+    const numInt = String(selectedEmpresa.value.num_int || '')
+    const colonia = String(selectedEmpresa.value.colonia || '')
 
     const domicilioCompleto = `${calle} ${numExt} ${numInt}, ${colonia}`.trim()
 
@@ -779,7 +887,7 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
     doc.text(rfc, 140, marcoY + 16)
 
     // Construir población
-    const cp = String(cliente.value.cp || '')
+    const cp = String(selectedEmpresa.value.cp || '')
     const poblacion = `${colonia}, ${cp}`.trim()
 
     doc.setFont('helvetica', 'bold')
@@ -833,7 +941,7 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
     // Dibujar filas dinámicas
     let yFila = yStart + 7
     const maxFilas = 11
-    const productosMostrar = productos.value.slice(0, maxFilas)
+    const productosMostrar = productosAgregados.value.slice(0, maxFilas)
 
     for (let i = 0; i < productosMostrar.length; i++) {
       const producto = productosMostrar[i]
@@ -854,13 +962,11 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
       const cantidad = String(producto.cantidad || '')
       const productoNombre = String(producto.producto || '')
       const medidas = String(producto.medidas || '')
-      const cantidadTintas = Array.isArray(producto.tintas) ? producto.tintas.length : 0
-      const tintas = String(cantidadTintas) + (cantidadTintas === 1 ? ' tinta' : ' tintas')
-      const material = String(producto.material_nombre || '')
-      // const color = String(producto.color || '') // ELIMINADO
+      const tintas = String(producto.tintas || '')
+      const material = String(producto.nombre_material || '')
       const flauta = String(producto.material_flauta || '')
-      const etc = String(producto.resistencia || '')
-      const precioFinal = Number(producto.precio_final) || 0
+      const etc = String(producto.material_resistencia || '')
+      const precioFinal = Number(producto.precioUnitario) || 0
       const importe = (Number(producto.cantidad) || 0) * precioFinal
 
       // Cantidad
@@ -950,10 +1056,9 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
       const y = subtotalesY + index * altoFilaSub
       doc.setFont('helvetica', 'bold')
       doc.setFontSize(10)
-      // Centrado horizontal y vertical
-      doc.text(etiqueta, subtotalesX + anchoCol / 2, y + altoFilaSub / 2, { align: 'center', baseline: 'middle' })
+      doc.text(etiqueta, subtotalesX + 2, y + 3)
       doc.setFont('helvetica', 'normal')
-      doc.text(valores[index], subtotalesX + anchoCol + anchoCol / 2, y + altoFilaSub / 2, { align: 'center', baseline: 'middle' })
+      doc.text(valores[index], subtotalesX + anchoCol + 2, y + 3)
     })
 
     yPosition += 35
@@ -1043,6 +1148,9 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
 }
 
 
-cargarDatos()
+
 cargarIva()
+obtenerClientes()
+obtenerProductosPorEmpresa()
+obtenerTintasPorProducto()
 </script>

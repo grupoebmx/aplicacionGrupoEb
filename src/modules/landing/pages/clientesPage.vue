@@ -95,7 +95,7 @@ function mostrarAlerta(tipo, mensaje) {
 const obtenerClientes = async () => {
   const options = {
     method: 'GET',
-    url: 'https://apisprueba.onrender.com/api/buscarTabla/clientes',
+    url: 'http://localhost:3000/api/buscarTabla/clientes',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -116,7 +116,7 @@ const borrarCliente = async (num_cliente) => {
   console.log('Eliminando cliente:', num_cliente)
   const options = {
     method: 'DELETE',
-    url: `https://apisprueba.onrender.com/api/clientes/borrar/${num_cliente}`,
+    url: `http://localhost:3000/api/clientes/borrar/${num_cliente}`,
     headers: {
       'Content-Type': 'application/json',
     },

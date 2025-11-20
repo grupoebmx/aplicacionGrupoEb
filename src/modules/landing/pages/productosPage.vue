@@ -36,7 +36,7 @@
         <!-- Contenedor principal con flex -->
         <div class="flex items-start justify-between gap-4">
           <!-- Columna de inputs -->
-          <div class="flex flex-col gap-2 w-full">
+            <div class="flex flex-col gap-2 w-full">
             <!-- Primera fila -->
             <div class="table w-full border-separate border-spacing-2">
               <div class="table-row">
@@ -122,10 +122,10 @@
                 </div>
 
                <div class="table-cell p-1 border border-gray-300 rounded w-2/8">
-               <div class="text-center text-xs font-semibold mb-1">Medidas internas</div>
+               <div class="text-center text-xs font-semibold mb-1">Medidas internas cm</div>
                <div class="flex justify-between gap-2">
-               <input type="number" step="any" placeholder="Largo" class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" v-model="form.largoInt"/>
                <input type="number" step="any" placeholder="Ancho" class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" v-model="form.anchoInt"/>
+               <input type="number" step="any" placeholder="Largo" class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" v-model="form.largoInt"/>
                <input type="number" step="any" placeholder="Alto"  class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" v-model="form.altoInt"/>
                <input type="number" step="any" placeholder="Ceja"  class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" v-model="form.ceja"/>
                </div>
@@ -248,18 +248,18 @@
   <div class="table-row">
     <!-- Dimensiones Cartón -->
     <div class="table-cell p-1 border border-gray-300 rounded w-[10%]">
-      <div class="text-center text-xs font-semibold mb-1">Dimensiones Cartón</div>
+      <div class="text-center text-xs font-semibold mb-1">Dimensiones Cartón cm</div>
       <div class="flex justify-between gap-2">
-        <input
-          type="number"
-          v-model="form.largoCarton"
-          placeholder="largo"
-          class="border border-gray-300 rounded-md px-2 h-8 text-xs w-1/2 leading-tight"
-        />
         <input
           type="number"
           v-model="form.anchoCarton"
           placeholder="ancho"
+          class="border border-gray-300 rounded-md px-2 h-8 text-xs w-1/2 leading-tight"
+        />
+        <input
+          type="number"
+          v-model="form.largoCarton"
+          placeholder="largo"
           class="border border-gray-300 rounded-md px-2 h-8 text-xs w-1/2 leading-tight"
         />
       </div>
@@ -267,7 +267,7 @@
 
     <!-- Marcas -->
     <div class="table-cell p-1 border border-gray-300 rounded w-[10%]">
-      <div class="text-center text-xs font-semibold mb-1">Marcas</div>
+      <div class="text-center text-xs font-semibold mb-1">Marcas Ml</div>
       <input
         type="text"
         v-model="form.marcas"
@@ -331,18 +331,57 @@
         </button>
       </div>
     </div>
-    <!-- Precio unitario -->
-<div class="table-cell p-1 border border-gray-300 rounded w-[10%]">
-  <div class="text-center text-xs font-semibold mb-1">Precio unitario</div>
-  <input
-    type="number"
-    step="0.01"
-    v-model.number="form.precio_unitario"
-    placeholder="Precio unitario"
-    class="border border-gray-300 rounded-md px-2 h-8 text-sm w-full leading-tight"
-  />
+  </div>
 </div>
 
+<!-- Cuarta fila: Campos SAT -->
+<div class="table w-full table-fixed border-separate border-spacing-1 mt-1">
+  <div class="table-row">
+
+    <!-- Clave del Producto o Servicio -->
+    <div class="table-cell p-0.5 border border-gray-300 rounded w-[15%]">
+      <div class="text-center text-[10px] font-semibold mb-0.5">Clave Producto/Servicio</div>
+      <select
+        v-model="form.satClaveProductoServicio"
+        class="border border-gray-300 rounded px-1 py-0.5 h-6 text-[10px] w-full bg-white text-black leading-none"
+      >
+        <option value="">Seleccione producto cartón</option>
+        <option value="24112404">24112404 - Caja</option>
+        <option value="24112408">24112408 - Cajas antiestática</option>
+        <option value="24112414">24112414 - Caja refrigerado</option>
+        <option value="24112500">24112500 - Cartón ondulado</option>
+        <option value="24112501">24112501 - Cartones ranurados</option>
+        <option value="24112502">24112502 - Cajas troquel una pieza</option>
+        <option value="24112503">24112503 - Cartones tapas separadas</option>
+        <option value="24112504">24112504 - Cajas moldeadas</option>
+        <option value="24112505">24112505 - Formas corrugado</option>
+        <option value="24113002">24113002 - Lámina cartón sólida</option>
+        <option value="24111502">24111502 - Bolsas de papel</option>
+      </select>
+    </div>
+
+    <!-- Clave de Unidad -->
+    <div class="table-cell p-0.5 border border-gray-300 rounded w-[12%]">
+      <div class="text-center text-[10px] font-semibold mb-0.5">Clave Unidad</div>
+      <select
+        v-model="form.satClaveUnidad"
+        class="border border-gray-300 rounded px-1 py-0.5 h-6 text-[10px] w-full bg-white text-black leading-none"
+      >
+        <option value="">Seleccione unidad</option>
+        <option value="H87">H87 - Pieza</option>
+        <option value="EA">EA - Elemento</option>
+        <option value="KGM">KGM - Kilogramo</option>
+        <option value="MTR">MTR - Metro</option>
+        <option value="XBX">XBX - Caja</option>
+        <option value="MTK">MTK - Metro Cuadrado</option>
+        <option value="XPK">XPK - Paquete</option>
+        <option value="XUN">XUN - Unidad</option>
+        <option value="XLT">XLT - Lote</option>
+        <option value="PR">PR - Par</option>
+        <option value="SET">SET - Conjunto</option>
+        <option value="KT">KT - KIT</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -409,11 +448,11 @@
       <div class="w-[200px] h-[200px] border border-gray-300 rounded flex justify-center items-center shadow-md relative mx-auto">
         <label
           class="flex items-center justify-center w-40 h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-gray-500 overflow-hidden">
-          <span v-if="!imagenFinal" class="text-xs text-gray-500 text-center">Imagen final</span>
-          <img v-if="imagenFinal" :src="imagenFinal.vistaPrevia" class="w-full h-full object-contain" />
+          <span v-if="!imagenFinalData" class="text-xs text-gray-500 text-center">Imagen final</span>
+          <img v-if="imagenFinalData" :src="imagenFinalData.vistaPrevia" class="w-full h-full object-contain" />
           <input type="file" accept="image/*" @change="cargarImagenFinal" class="hidden" />
         </label>
-        <button v-if="imagenFinal" @click.prevent="eliminarImagenFinal"
+        <button v-if="imagenFinalData" @click.prevent="eliminarImagenFinal"
           class="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded">X</button>
       </div>
     </div>
@@ -427,12 +466,12 @@
             <label
               class="flex items-center justify-center w-100 h-90 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-gray-500 overflow-hidden"
             >
-              <span v-if="!imagenBase" class="text-xs text-gray-500 text-center">Imagen medidas</span>
-              <img v-if="imagenBase" :src="imagenBase.vistaPrevia" class="w-full h-full object-contain" accept="image/*" />
+              <span v-if="!imagenBaseData" class="text-xs text-gray-500 text-center">Imagen medidas</span>
+              <img v-if="imagenBaseData" :src="imagenBaseData.vistaPrevia" class="w-full h-full object-contain" accept="image/*" />
               <input type="file" accept="image/*" @change="cargarImagenBase" class="hidden" />
             </label>
             <button
-              v-if="imagenBase"
+              v-if="imagenBaseData"
               @click.prevent="eliminarImagenBase"
               class="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded"
             >
@@ -466,12 +505,12 @@
       <label
         class="flex items-center justify-center w-full h-full border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-gray-500 overflow-hidden"
       >
-        <span v-if="!imagenGrabado" class="text-xs text-gray-500 text-center">Master gráfico</span>
-        <img v-if="imagenGrabado" :src="imagenGrabado.vistaPrevia" class="w-full h-full object-contain" />
+        <span v-if="!imagenGrabadoData" class="text-xs text-gray-500 text-center">Master gráfico</span>
+        <img v-if="imagenGrabadoData" :src="imagenGrabadoData.vistaPrevia" class="w-full h-full object-contain" />
         <input type="file" accept="image/*" @change="cargarImagenGrabado" class="hidden" />
       </label>
       <button
-        v-if="imagenGrabado"
+        v-if="imagenGrabadoData"
         @click.prevent="eliminarImagenGrabado"
         class="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded"
       >
@@ -541,12 +580,12 @@
       <label
         class="flex items-center justify-center w-full h-full border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-gray-500 overflow-hidden"
       >
-        <span v-if="!imagenSuaje" class="text-xs text-gray-500 text-center">Imagen suaje</span>
-        <img v-if="imagenSuaje" :src="imagenSuaje.vistaPrevia" class="w-full h-full object-contain" />
+        <span v-if="!imagenSuajeData" class="text-xs text-gray-500 text-center">Imagen suaje</span>
+        <img v-if="imagenSuajeData" :src="imagenSuajeData.vistaPrevia" class="w-full h-full object-contain" />
         <input type="file" accept="image/*" @change="cargarImagenSuaje" class="hidden" />
       </label>
       <button
-        v-if="imagenSuaje"
+        v-if="imagenSuajeData"
         @click.prevent="eliminarImagenSuaje"
         class="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded"
       >
@@ -582,11 +621,14 @@ const router = useRouter()
 
 const fechaActual = new Date().toISOString().substring(0, 10)
 
+
 const form = reactive({
 
   grabado: '',
   num_cliente: '',
   clave_material: '',
+  satClaveProductoServicio: '',
+  satClaveUnidad: '',
   suajesNumsuaje: '',
   clave: '',
   fecha: fechaActual,
@@ -597,7 +639,7 @@ const form = reactive({
   anchoInt: '',
   largoInt: '',
   altoInt: '',
-  ceja: '',
+  ceja: '3.5',
   anchoCarton: '',
   largoCarton: '',
   marcas: '',
@@ -606,7 +648,7 @@ const form = reactive({
   largo_suaje: '',
   corto_sep: '',
   largo_sep: '',
-  precio_unitario: '',
+
 });
 
 function mostrarAlerta(tipo, mensaje) {
@@ -651,19 +693,32 @@ async function insertarProducto() {
   formData.set('num_cliente', selectedEmpresa.value || '');
   formData.set('clave_material', selectedMaterial.value || '');
 
+  // Asegurar que la clave de unidad SAT se envíe tal cual se muestra en el select
+  // (por ejemplo: "H87 - Pieza" o "EA - Elemento")
+  formData.set('satClaveUnidad', form.satClaveUnidad || '');
+
   // Tintas
   const tintasArray = [tinta1.value, tinta2.value, tinta3.value, tinta4.value].filter(Boolean);
   formData.append('tintas', JSON.stringify(tintasArray));
 
   // Imágenes con nombres que reconoce el backend
-  if (imagenFinalData.value?.valueFile) formData.append('imagenFinal', imagenFinalData.value.valueFile);
-  if (imagenBaseData.value?.valueFile) formData.append('imagen', imagenBaseData.value.valueFile);
-  if (imagenGrabadoData.value?.valueFile) formData.append('imagenGrabado', imagenGrabadoData.value.valueFile);
-  if (imagenSuajeData.value?.valueFile) formData.append('imagenSuaje', imagenSuajeData.value.valueFile);
+if (imagenFinalData.value?.archivo) formData.append('imagenFinal', imagenFinalData.value.archivo);
+if (imagenBaseData.value?.archivo) formData.append('imagen', imagenBaseData.value.archivo);
+if (imagenGrabadoData.value?.archivo) formData.append('imagenGrabado', imagenGrabadoData.value.archivo);
+if (imagenSuajeData.value?.archivo) formData.append('imagenSuaje', imagenSuajeData.value.archivo);
+
+
+for (let [key, value] of formData.entries()) {
+    if (value instanceof File) {
+      console.log(`${key}: archivo -> ${value.name} (${value.type}, ${value.size} bytes)`);
+    } else {
+      console.log(`${key}:`, value);
+    }
+  }
 
   try {
     const response = await axios.post(
-      'https://apisprueba.onrender.com/api/productos/insertar',
+      'http://localhost:3000/api/productos/insertar',
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
@@ -707,7 +762,7 @@ const closeModal = () => {
 
 const obtenerTintas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/tintas')
+    const res = await axios.get('http://localhost:3000/api/tintas')
     tintas.value = res.data
   } catch (error) {
     console.error('Error al obtener tintas:', error)
@@ -716,7 +771,7 @@ const obtenerTintas = async () => {
 
 const guardarTinta = async () => {
   try {
-    const res = await axios.post('https://apisprueba.onrender.com/api/tintas/insertar', {
+    const res = await axios.post('http://localhost:3000/api/tintas/insertar', {
       gcmi: gcmi.value,
       nombre_tinta: nombreTinta.value
     })
@@ -739,7 +794,7 @@ const guardarTinta = async () => {
 // Función para traer clientes
 const obtenerClientes = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/clientes')
+    const res = await axios.get('http://localhost:3000/api/clientes')
     clientes.value = res.data
   } catch (error) {
     console.error('Error al obtener clientes:', error)
@@ -750,7 +805,7 @@ const obtenerClientes = async () => {
 
 const obtenerMateriales = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/materiales')
+    const res = await axios.get('http://localhost:3000/api/materiales')
     materiales.value = res.data
     console.log('Materiales cargados:', materiales.value)
   } catch (error) {

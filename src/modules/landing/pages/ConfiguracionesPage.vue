@@ -48,7 +48,20 @@
       </div>
 
       <!-- Contenido dinámico -->
-      <div class="flex-1 pl-4">
+         <div class="flex-1 pl-4">
+        <div v-if="seccionActiva === 'usuarios'">
+          <tablaUsuarios
+        :encabezado="['Id', 'Correo', 'Rol', 'Num. empleado', 'Nombre', 'Apellido']"
+        :claves="['id','correo','rol','numeroempleado','nombre','apellido']"
+        :info="listaUsuarios"
+        @editar="abrirModal"
+        @eliminar="eliminarUsuario"
+        @agregar="irAFormularioAgregar"
+        @cambiarContrasena="cambiarContrasena"
+      />
+        </div>
+
+
         <div v-if="seccionActiva === 'porcentajes'">
           <tablaPorcentajes
         :encabezado="['Id', 'Rango', 'Porcentaje']"
@@ -383,6 +396,91 @@
       </template>
     </ModalCajas>
 
+    <ModalUsuarios
+      :visible="modalListaUsuarios"
+      titulo="Editar Usuarios"
+      @cancelar="cerrarModal('lista usuarios')"
+      @confirmar="guardarCambiosUsuarios"
+    >
+      <template #contenido>
+        <div v-for="(campo, key) in formDataUsuarios" :key="key" class="mb-3">
+      <label class="block text-gray-700 text-sm font-medium mb-1">{{ key }}</label>
+      <input
+        v-model="formDataUsuarios[key]"
+        type="text"
+        class="w-full border rounded p-2"
+        :disabled="key === 'id'"
+      />
+    </div>
+      </template>
+    </ModalUsuarios>
+
+
+          <!-- Modal simple -->
+      <div v-if="mostrarModalCambiarPass" class="fixed inset-0 bg-transparent bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-96">
+          <h2 class="text-xl font-bold mb-4">Cambiar Contraseña</h2>
+
+          <p class="mb-4">
+            Usuario: <strong>{{ usuarioSeleccionado?.correo }}</strong>
+          </p>
+
+          <div class="relative mb-4">
+            <input
+              v-model="nuevaContrasena"
+              :type="mostrarPassword ? 'text' : 'password'"
+              class="w-full px-3 py-2 border rounded-md pr-10"
+              placeholder="Nueva contraseña"
+            />
+            <button
+              @click="mostrarPassword = !mostrarPassword"
+              type="button"
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            >
+              <svg v-if="!mostrarPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex gap-2 justify-end">
+            <button @click="cerrarModalCambiarPass" class="px-4 py-2 bg-gray-300 rounded-md">
+              Cancelar
+            </button>
+            <button
+              @click="confirmarCambioContrasena"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md"
+              :disabled="!nuevaContrasena"
+            >
+              Cambiar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ModalMateriales
+      :visible="modalListaMateriales"
+      titulo="Editar Materiales"
+      @cancelar="cerrarModal('lista materiales')"
+      @confirmar="guardarCambiosMateriales"
+    >
+      <template #contenido>
+        <div v-for="(campo, key) in formDataMateriales" :key="key" class="mb-3">
+      <label class="block text-gray-700 text-sm font-medium mb-1">{{ key }}</label>
+      <input
+        v-model="formDataMateriales[key]"
+        type="text"
+        class="w-full border rounded p-2"
+        :disabled="key === 'clave'"
+      />
+    </div>
+      </template>
+    </ModalMateriales>
+
       </div>
     </div>
   </div>
@@ -391,6 +489,7 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 import tablaPorcentajes from '@/components/TablaPrecios.vue'
 import tablaTintas from '@/components/TablaPrecios.vue'
 import tablaMaquinas from '@/components/TablaPrecios.vue'
@@ -410,6 +509,11 @@ import TablaMateriales from '@/components/TablaMateriales.vue'
 import ModalMateriales from '@/components/ModalBase.vue'
 import TablaCajas from '@/components/TablaCajas.vue'
 import ModalCajas from '@/components/ModalBase.vue'
+import TablaUsuarios from '@/components/TablaUsuarios.vue'
+import ModalUsuarios from '@/components/ModalBase.vue'
+
+
+const router = useRouter()
 
 const porcentajes = ref([])
 const tintas = ref([])
@@ -421,7 +525,11 @@ const envio = ref([])
 const listaTintas = ref([])
 const listaMateriales = ref([])
 const listaCajas = ref([])
-
+const listaUsuarios = ref([])
+const mostrarModalCambiarPass = ref(false)
+const usuarioSeleccionado = ref(null)
+const nuevaContrasena = ref('')
+const mostrarPassword = ref(false)
 
 const seccionActiva = ref('porcentajes')
 
@@ -435,6 +543,7 @@ const modalUtilidad = ref(false)
 const modalEnvio = ref(false)
 const modalListaMateriales = ref(false)
 const modalListaCajas = ref(false)
+const modalListaUsuarios = ref(false)
 
 const formData = ref({ id: null, rango: '', porcentaje: 0, precio: 0 })
 const formDataMateriales = ref({
@@ -456,6 +565,14 @@ const formDataCajas = ref({
   area_max: 0
 })
 
+const formDataUsuarios = ref({
+  id: null,
+  correo: '',
+  rol: '',
+  numeroempleado: '',
+  nombre: '',
+  apellido: ''
+})
 
 function mostrarAlerta(tipo, mensaje) {
   const alertContainer = document.getElementById('alert-container');
@@ -490,7 +607,7 @@ function mostrarAlerta(tipo, mensaje) {
 
 const obtenerPorcentajes = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/porcentajeCantidad')
+    const res = await axios.get('http://localhost:3000/api/porcentajeCantidad')
     porcentajes.value = res.data
   } catch (error) {
     console.error('Error al obtener porcentajes:', error)
@@ -499,7 +616,7 @@ const obtenerPorcentajes = async () => {
 
 const obtenerTintas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/tinta_cantidad')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/tinta_cantidad')
     tintas.value = res.data
   } catch (error) {
     console.error('Error al obtener tintas:', error)
@@ -508,7 +625,7 @@ const obtenerTintas = async () => {
 
 const obtenerMaquinas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/maquina_cantidad')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/maquina_cantidad')
     maquinas.value = res.data
   } catch (error) {
     console.error('Error al obtener maquinas:', error)
@@ -517,7 +634,7 @@ const obtenerMaquinas = async () => {
 
 const obtenerPegados = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/pegado_cantidad')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/pegado_cantidad')
     pegados.value = res.data
   } catch (error) {
     console.error('Error al obtener pegados:', error)
@@ -526,7 +643,7 @@ const obtenerPegados = async () => {
 
 const obtenerFijos = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/fijos_cantidad')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/fijos_cantidad')
     fijos.value = res.data
   } catch (error) {
     console.error('Error al obtener fijos:', error)
@@ -535,7 +652,7 @@ const obtenerFijos = async () => {
 
 const obtenerUtilidad = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/utilidades')
+    const res = await axios.get('http://localhost:3000/api/utilidades')
     utilidad.value = res.data
   } catch (error) {
     console.error('Error al obtener utilidad:', error)
@@ -544,7 +661,7 @@ const obtenerUtilidad = async () => {
 
 const obtenerEnvio = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/envio_cantidad')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/envio_cantidad')
     envio.value = res.data
   } catch (error) {
     console.error('Error al obtener envio:', error)
@@ -553,7 +670,7 @@ const obtenerEnvio = async () => {
 
 const obtenerListaTintas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/tintas')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/tintas')
     listaTintas.value = res.data
   } catch (error) {
     console.error('Error al obtener lista de tintas:', error)
@@ -562,7 +679,7 @@ const obtenerListaTintas = async () => {
 
 const obtenerListaMateriales = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/materiales')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/materiales')
     listaMateriales.value = res.data
   } catch (error) {
     console.error('Error al obtener lista de materiales:', error)
@@ -571,10 +688,20 @@ const obtenerListaMateriales = async () => {
 
 const obtenerListaCajas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/categoria_cajas')
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/categoria_cajas')
     listaCajas.value = res.data
   } catch (error) {
     console.error('Error al obtener lista de cajas:', error)
+  }
+}
+
+const obtenerUsuarios = async () => {
+  try {
+    const res = await axios.get('http://localhost:3000/api/usuarios')
+    listaUsuarios.value = res.data
+    console.log(res.data)
+  } catch (error) {
+    console.error('Error al obtener lista de usuarios:', error)
   }
 }
 
@@ -592,6 +719,12 @@ const abrirModal = (item) => {
     return
   }
 
+  if (seccionActiva.value === 'usuarios') {
+    formDataUsuarios.value = { ...item }
+    modalListaUsuarios.value = true
+    return
+  }
+
   formData.value = { ...item }
 
   switch (seccionActiva.value) {
@@ -602,6 +735,7 @@ const abrirModal = (item) => {
     case 'precios fijos': modalFijos.value = true; break
     case 'precios utilidad': modalUtilidad.value = true; break
     case 'precios envio': modalEnvio.value = true; break
+
 
   }
 }
@@ -617,6 +751,7 @@ const cerrarModal = (tipo) => {
     case 'envio': modalEnvio.value = false; break
     case 'lista materiales': modalListaMateriales.value = false; break
     case 'lista cajas': modalListaCajas.value = false; break
+    case 'lista usuarios': modalListaUsuarios.value = false; break
   }
 }
 
@@ -647,7 +782,7 @@ const guardarCambiosMateriales = async () => {
 
     // Llamada al endpoint PUT
     await axios.put(
-      `https://apisprueba.onrender.com/api/materiales/${formDataMateriales.value.clave}`,
+      `http://localhost:3000/api/materiales/${formDataMateriales.value.clave}`,
       body
     );
 
@@ -674,7 +809,7 @@ const guardarCambiosCajas = async () => {
 
     // Llamada al endpoint PUT para actualizar la caja
     await axios.put(
-      `https://apisprueba.onrender.com/api/categoria_cajas/${formDataCajas.value.id}`,
+      `http://localhost:3000/api/categoria_cajas/${formDataCajas.value.id}`,
       body
     );
 
@@ -688,6 +823,35 @@ const guardarCambiosCajas = async () => {
 };
 
 
+const guardarCambiosUsuarios = async () => {
+  try {
+    if (!formDataUsuarios.value.id) {
+      mostrarAlerta('danger', 'No se puede guardar sin ID del usuario');
+      return;
+    }
+
+    const body = {
+      correo: formDataUsuarios.value.correo || '',
+      rol: formDataUsuarios.value.rol || '',
+      numeroempleado: formDataUsuarios.value.numeroempleado || null,
+      nombre: formDataUsuarios.value.nombre || '',
+      apellido: formDataUsuarios.value.apellido || ''
+    };
+
+    await axios.put(
+      `http://localhost:3000/api/usuarios/${formDataUsuarios.value.id}`,
+      body
+    );
+
+    mostrarAlerta('success', 'Usuario actualizado correctamente');
+    cerrarModal('lista usuarios');
+    await obtenerUsuarios();
+
+  } catch (error) {
+    console.error('Error al guardar usuario:', error);
+    mostrarAlerta('danger', 'Error al actualizar usuario');
+  }
+};
 
 
 
@@ -698,7 +862,7 @@ const guardarCambios = async () => {
 
     switch (seccionActiva.value) {
       case 'porcentajes': {
-        url = `https://apisprueba.onrender.com/api/porcentajeCantidad/actualizar/${formData.value.id}`
+        url = `http://localhost:3000/api/porcentajeCantidad/actualizar/${formData.value.id}`
         body = { porcentaje: formData.value.porcentaje }
         break
       }
@@ -721,7 +885,7 @@ const guardarCambios = async () => {
           return
         }
 
-        url = `https://apisprueba.onrender.com/api/general/actualizar/${tabla}/${formData.value.id}`
+        url = `http://localhost:3000/api/general/actualizar/${tabla}/${formData.value.id}`
         body = { precio: formData.value.precio }
         break
       }
@@ -776,7 +940,7 @@ const guardarCambios = async () => {
 
 const borrarTinta = async (id_tinta) => {
   try {
-    await axios.delete(`https://apisprueba.onrender.com/api/tintas/borrar/${id_tinta}`)
+    await axios.delete(`http://localhost:3000/api/tintas/borrar/${id_tinta}`)
     mostrarAlerta('success', 'Tinta eliminada correctamente')
     await obtenerListaTintas()
   } catch (error) {
@@ -788,7 +952,7 @@ const borrarTinta = async (id_tinta) => {
 const borrarMaterial = async (clave) => {
   try {
     // Intentamos eliminar el material
-    await axios.delete(`https://apisprueba.onrender.com/api/materiales/borrar/${clave}`);
+    await axios.delete(`http://localhost:3000/api/materiales/borrar/${clave}`);
 
     // Si todo sale bien, mostramos alerta de éxito
     mostrarAlerta('success', 'Material eliminado correctamente');
@@ -806,6 +970,43 @@ const borrarMaterial = async (clave) => {
   }
 };
 
+const eliminarUsuario = async (id) => {
+  try {
+    await axios.delete(`http://localhost:3000/api/usuarios/${id}`)
+    mostrarAlerta('success', 'Usuario eliminado correctamente')
+    obtenerUsuarios()
+  } catch (error) {
+    console.error('Error al eliminar usuario:', error)
+    mostrarAlerta('danger', 'Error al eliminar usuario')
+  }
+}
+
+
+const cambiarContrasena = (usuario) => {
+  usuarioSeleccionado.value = usuario
+  mostrarModalCambiarPass.value = true
+}
+
+const confirmarCambioContrasena = async () => {
+  try {
+    await axios.put(
+      `http://localhost:3000/api/usuarios/${usuarioSeleccionado.value.id}/cambiar-contrasenia`,
+      { nuevaContrasenia: nuevaContrasena.value }
+    )
+    mostrarAlerta('success', 'Contraseña actualizada correctamente')
+    cerrarModalCambiarPass()
+  } catch (error) {
+    console.error('Error al cambiar contraseña:', error)
+    mostrarAlerta('danger', 'Error al cambiar la contraseña')
+  }
+}
+
+const cerrarModalCambiarPass = () => {
+  mostrarModalCambiarPass.value = false
+  nuevaContrasena.value = ''
+  usuarioSeleccionado.value = null
+}
+
 
 
 const opciones = [
@@ -818,11 +1019,16 @@ const opciones = [
   { id: 'precios envio', label: 'Costo envío' },
   { id: 'lista tintas', label: 'Lista Tintas' },
   { id: 'lista materiales', label: 'Lista Materiales' },
-  { id: 'lista cajas', label: 'Lista Cajas' }
+  { id: 'lista cajas', label: 'Lista Cajas' },
+  { id: 'usuarios', label: 'Usuarios' }
 ]
 
 const seleccionar = (id) => {
   seccionActiva.value = id
+}
+
+const irAFormularioAgregar = () => {
+  router.push('/AgregarUsuario')
 }
 
 // === CARGA INICIAL ===
@@ -836,6 +1042,7 @@ obtenerEnvio()
 obtenerListaTintas()
 obtenerListaMateriales()
 obtenerListaCajas()
+obtenerUsuarios()
 </script>
 
 

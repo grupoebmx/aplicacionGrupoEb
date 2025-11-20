@@ -281,7 +281,7 @@ function mostrarAlerta(tipo, mensaje) {
 
 const insertarCliente = async () => {
   try {
-    const response = await axios.post('https://apisprueba.onrender.com/api/clientes/insertar', form)
+    const response = await axios.post('http://localhost:3000/api/clientes/insertar', form)
     console.log(response.data)
     Object.keys(form).forEach(key => form[key] = '')
     mostrarAlerta('success', 'Cliente insertado correctamente')

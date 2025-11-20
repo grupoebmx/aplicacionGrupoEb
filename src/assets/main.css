@@ -5,14 +5,13 @@
 
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* Puedes poner esto en src/assets/main.css o en tu archivo global de estilos */
 body, label, input, select, textarea, h2 {
   font-family: 'Inter', sans-serif;
 }
 
-/* 🎨 ===== ALERTAS CON DEGRADADOS GLOBALES ===== */
 
-/* Estilo base para todas las alertas */
+
+
 .alert {
   border-radius: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -55,4 +54,11 @@ body, label, input, select, textarea, h2 {
 .campo-obligatorio {
   border: 2px solid red !important;
   background-color: #ffe6e6;
+}
+
+button:disabled {
+  background-color: #9ca3af; /* gris */
+  cursor: not-allowed;
+  opacity: 0.7;
+  color: #ffffff;
 }

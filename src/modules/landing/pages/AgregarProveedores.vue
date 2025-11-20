@@ -174,7 +174,7 @@ const form = reactive({
 
 const guardarProveedor = async () => {
   try {
-    const res = await axios.post("https://apisprueba.onrender.com/api/proveedor/insertar", form)
+    const res = await axios.post("http://localhost:3000/api/proveedor/insertar", form)
     console.log("Proveedor insertado:", res.data)
     alert("Proveedor agregado correctamente")
     router.push("/proveedores")

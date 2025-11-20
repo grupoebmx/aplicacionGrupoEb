@@ -152,7 +152,7 @@ setTimeout(() => {
 const cargarProductos = async () => {
   loading.value = true;
   try {
-    const { data } = await axios.get('https://apisprueba.onrender.com/api/producto/catalogo');
+    const { data } = await axios.get('http://localhost:3000/api/producto/catalogo');
     productos.value = data;
     console.log('Productos cargados:', productos.value);
   } catch (error) {
@@ -191,7 +191,7 @@ const eliminarProducto = async (identificador) => {
     return
   }
   try {
-    await axios.delete(`https://apisprueba.onrender.com/api/productos/${identificador}`)
+    await axios.delete(`http://localhost:3000/api/productos/${identificador}`)
     productos.value = productos.value.filter((p) => p.identificador !== identificador)
     console.log('Producto eliminado:', identificador)
     mostrarAlerta('success', 'Producto eliminado correctamente');

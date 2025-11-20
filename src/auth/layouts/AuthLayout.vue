@@ -1,17 +1,25 @@
 <template>
-  <!-- component -->
-  <div class="bg-gray-100 flex justify-center items-center h-screen">
-    <!-- Left: Image -->
-    <div class="w-1/2 h-screen hidden lg:block">
-      <img
-        src="https://placehold.co/800x/667fff/ffffff.png?text=Your+Image&font=Montserrat"
-        alt="Placeholder Image"
-        class="object-cover w-full h-full"
-      />
+  <div class="flex flex-col h-screen">
+       <!-- Header -->
+    <header class="flex items-center px-4 border-b border-gray-300 sm:px-6 lg:px-8 bg-black">
+    <div>
+
+        <img
+          alt="Logo Grupo EB"
+          class="logo object-contain cursor-pointer"
+          src="@/assets/logoEB.png"
+          width="150"
+          height="100"
+        />
+
     </div>
-    <!-- Right: Login Form -->
-    <div class="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-      <RouterView />
-    </div>
+    </header>
+      <div class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div class="w-full max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+          <div class="w-full">
+            <RouterView />
+          </div>
+        </div>
+      </div>
   </div>
 </template>

@@ -36,9 +36,19 @@
 
       </div>
 
+       <!-- Barra de búsqueda -->
+      <div class="flex justify-center items-center mb-4">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Buscar por cliente..."
+          class="border rounded-md p-2 w-1/3 shadow-sm text-sm"
+        />
+      </div>
+
       <!-- Tabla de clientes -->
       <TablaCotizaciones
-        :encabezado="['Núm. de cotización', 'Productos', 'Cliente', 'Fecha']"
+        :encabezado="['Núm. de cotización', 'Productos','Cliente', 'Fecha']"
         :claves="['id','productos','nombre_cliente','fecha_formateada']"
         :info="cotizaciones"
         @eliminar="borrarCotizacion"
@@ -50,12 +60,13 @@
 
 <script setup>
 import TablaCotizaciones from '@/components/TablaCotizaciones.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const detalleCotizaciones = ref([])
-const cotizaciones = ref([])
+const cotizacionesBase = ref([])
+const searchQuery = ref('')
 
  function mostrarAlerta(tipo, mensaje) {
   const alertContainer = document.getElementById('alert-container');
@@ -90,8 +101,8 @@ const obtenerCotizaciones = async () => {
   try {
 
     const [cotRes, clientesRes] = await Promise.all([
-      axios.get('https://apisprueba.onrender.com/api/buscarTabla/cotizaciones'),
-      axios.get('https://apisprueba.onrender.com/api/buscarTabla/clientes'),
+      axios.get('http://localhost:3000/api/buscarTabla/cotizaciones'),
+      axios.get('http://localhost:3000/api/buscarTabla/clientes'),
     ]);
 
 
@@ -103,7 +114,7 @@ const obtenerCotizaciones = async () => {
     detalleCotizaciones.value = {};
 
 
-    cotizaciones.value = await Promise.all(
+    cotizacionesBase.value = await Promise.all(
       cotRes.data
         .sort((a, b) => {
           const fechaDiff = new Date(b.fecha) - new Date(a.fecha);
@@ -113,7 +124,7 @@ const obtenerCotizaciones = async () => {
         .map(async (c) => {
           // Obtener productos de la cotización
           const { data: productosCot } = await axios.get(
-            `https://apisprueba.onrender.com/api/detalleCotizaciones/${c.id}`
+            `http://localhost:3000/api/detalleCotizaciones/${c.id}`
           );
 
           // Guardar detalles completos por id de cotización
@@ -142,16 +153,21 @@ const obtenerCotizaciones = async () => {
   }
 };
 
-
+const cotizaciones = computed(() => {
+  if (!searchQuery.value) return cotizacionesBase.value
+  return cotizacionesBase.value.filter(c =>
+    c.nombre_cliente.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
 
 const borrarCotizacion = async (id) => {
 
   try {
-    await axios.delete(`https://apisprueba.onrender.com/api/cotizaciones/borrar/${id}`);
+    await axios.delete(`http://localhost:3000/api/cotizaciones/borrar/${id}`);
     mostrarAlerta('success', 'Cotización eliminada correctamente');
 
 
-    cotizaciones.value = cotizaciones.value.filter(c => c.id !== id);
+     cotizacionesBase.value = cotizacionesBase.value.filter(c => c.id !== id);
   } catch (error) {
     console.error("Error al eliminar cotización:", error);
     mostrarAlerta('danger', 'Error al eliminar la cotización');

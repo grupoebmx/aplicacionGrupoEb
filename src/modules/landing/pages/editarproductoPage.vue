@@ -97,19 +97,21 @@
                <div class="flex justify-between gap-2">
                <div class="flex justify-between gap-2">
 
-                 <input
-    type="number"
-    step="any"
-    placeholder="Largo"
-    v-model="form.largo_int"
-    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight"
-  />
 
   <input
     type="number"
     step="any"
     placeholder="Ancho"
     v-model.number="form.ancho_int"
+    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight"
+  />
+
+
+                 <input
+    type="number"
+    step="any"
+    placeholder="Largo"
+    v-model="form.largo_int"
     class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight"
   />
 
@@ -252,18 +254,20 @@
   <div class="table-cell p-1 border border-gray-300 rounded w-[10%]">
     <div class="text-center text-xs font-semibold mb-1">Dimensiones Cartón</div>
     <div class="flex justify-between gap-2">
-      <input
-        type="number"
-        step="any"
-        v-model="form.largo_carton"
-        placeholder="Largo"
-        class="border border-gray-300 rounded-md px-2 h-7 text-xs w-1/2 leading-tight"
-      />
+
       <input
         type="number"
         step="any"
         v-model="form.ancho_carton"
         placeholder="Ancho"
+        class="border border-gray-300 rounded-md px-2 h-7 text-xs w-1/2 leading-tight"
+      />
+
+      <input
+        type="number"
+        step="any"
+        v-model="form.largo_carton"
+        placeholder="Largo"
         class="border border-gray-300 rounded-md px-2 h-7 text-xs w-1/2 leading-tight"
       />
 
@@ -336,20 +340,60 @@
   </div>
 </div>
 
-<!-- Precio unitario -->
-<div class="table-cell p-1 border border-gray-300 rounded w-[10%]">
-  <div class="text-center text-xs font-semibold mb-1">Precio unitario</div>
-  <input
-    type="number"
-    step="0.01"
-    v-model.number="form.precio_unitario"
-    placeholder="Precio unitario"
-    class="border border-gray-300 rounded-md px-2 h-8 text-sm w-full leading-tight"
-  />
-</div>
 
   </div>
   </div>
+
+  <!-- Cuarta fila: Campos SAT -->
+<div class="table w-full table-fixed border-separate border-spacing-1 mt-1">
+  <div class="table-row">
+
+    <!-- Clave del Producto o Servicio -->
+    <div class="table-cell p-0.5 border border-gray-300 rounded w-[15%]">
+      <div class="text-center text-[10px] font-semibold mb-0.5">Clave Producto/Servicio</div>
+      <select
+        v-model="form.satclaveproductoservicio"
+        class="border border-gray-300 rounded px-1 py-0.5 h-6 text-[10px] w-full bg-white text-black leading-none"
+      >
+        <option value="">Seleccione producto cartón</option>
+        <option value="24112404">24112404 - Caja</option>
+        <option value="24112408">24112408 - Cajas antiestática</option>
+        <option value="24112414">24112414 - Caja refrigerado</option>
+        <option value="24112500">24112500 - Cartón ondulado</option>
+        <option value="24112501">24112501 - Cartones ranurados</option>
+        <option value="24112502">24112502 - Cajas troquel una pieza</option>
+        <option value="24112503">24112503 - Cartones tapas separadas</option>
+        <option value="24112504">24112504 - Cajas moldeadas</option>
+        <option value="24112505">24112505 - Formas corrugado</option>
+        <option value="24113002">24113002 - Lámina cartón sólida</option>
+        <option value="24111502">24111502 - Bolsas de papel</option>
+      </select>
+    </div>
+
+    <!-- Clave de Unidad -->
+    <div class="table-cell p-0.5 border border-gray-300 rounded w-[12%]">
+      <div class="text-center text-[10px] font-semibold mb-0.5">Clave Unidad</div>
+      <select
+        v-model="form.satclaveunidad"
+        class="border border-gray-300 rounded px-1 py-0.5 h-6 text-[10px] w-full bg-white text-black leading-none"
+      >
+        <option value="">Seleccione unidad</option>
+        <option value="H87">H87 - Pieza</option>
+        <option value="EA">EA - Elemento</option>
+        <option value="KGM">KGM - Kilogramo</option>
+        <option value="MTR">MTR - Metro</option>
+        <option value="XBX">XBX - Caja</option>
+        <option value="MTK">MTK - Metro Cuadrado</option>
+        <option value="XPK">XPK - Paquete</option>
+        <option value="XUN">XUN - Unidad</option>
+        <option value="XLT">XLT - Lote</option>
+        <option value="PR">PR - Par</option>
+        <option value="SET">SET - Conjunto</option>
+        <option value="KT">KT - KIT</option>
+      </select>
+    </div>
+  </div>
+</div>
 
 
 
@@ -596,7 +640,9 @@ const form = reactive({
   corto_sep: '',
   largo_sep: '',
   identificador: '',
-  precio_unitario: ''
+  precio_unitario: '',
+  satclaveproductoservicio: '',
+  satclaveunidad: ''
 })
 
 // Imágenes
@@ -666,7 +712,7 @@ const guardarTinta = async () => {
   }
 
   try {
-    const res = await axios.post('https://apisprueba.onrender.com/api/tintas/insertar', {
+    const res = await axios.post('http://localhost:3000/api/tintas/insertar', {
       gcmi: gcmi.value,
       nombre_tinta: nombreTinta.value
     })
@@ -693,7 +739,7 @@ const guardarTinta = async () => {
 const cargarProducto = async () => {
   try {
     const { id } = route.params
-    const res = await axios.get(`https://apisprueba.onrender.com/api/productos/${id}`)
+    const res = await axios.get(`http://localhost:3000/api/productos/${id}`)
 
     if (res.data && res.data.length > 0) {
       const producto = res.data[0]
@@ -717,7 +763,7 @@ const cargarProducto = async () => {
 // Obtener tintas
 const obtenerTintas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/tintas')
+    const res = await axios.get('http://localhost:3000/api/tintas')
     tintas.value = res.data
   } catch (error) {
     console.error('Error al obtener tintas:', error)
@@ -728,7 +774,7 @@ const obtenerTintas = async () => {
 const cargarProductoTintas = async () => {
   try {
     const { id } = route.params
-    const res = await axios.get(`https://apisprueba.onrender.com/api/productos/tintas/${id}`)
+    const res = await axios.get(`http://localhost:3000/api/productos/tintas/${id}`)
     if (res.data && res.data.length > 0) {
       const tintasProducto = res.data.slice(0, 4)
       tinta1.value = tintasProducto[0]?.id_tinta || ''
@@ -758,6 +804,8 @@ const ActualizarProducto = async () => {
     // Material seleccionado
     if (selectedMaterial.value) formData.set('clave_material', selectedMaterial.value);
 
+    formData.set('satClaveUnidad', form.satClaveUnidad || '');
+
     // Tintas (hasta 4)
     const tintasArray = [tinta1.value, tinta2.value, tinta3.value, tinta4.value].filter(Boolean);
     if (tintasArray.length > 0) formData.append('tintas', JSON.stringify(tintasArray));
@@ -775,7 +823,7 @@ const ActualizarProducto = async () => {
 
     // Llamada PUT al backend
     const res = await axios.put(
-      `https://apisprueba.onrender.com/api/productos/actualizar/${identificador}`,
+      `http://localhost:3000/api/productos/actualizar/${identificador}`,
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
@@ -796,7 +844,7 @@ const ActualizarProducto = async () => {
 // Obtener materiales
 const obtenerMateriales = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/materiales')
+    const res = await axios.get('http://localhost:3000/api/materiales')
     materiales.value = res.data
   } catch (error) {
     console.error('Error al obtener materiales:', error)

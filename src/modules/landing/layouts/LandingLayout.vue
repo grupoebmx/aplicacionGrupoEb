@@ -1,19 +1,44 @@
 <template>
   <div class="flex flex-col h-screen">
     <!-- Header -->
-    <header class="flex items-center px-4 border-b border-gray-300 sm:px-6 lg:px-8 bg-black">
-      <div>
-        <a class="flex items-center gap-2 font-semibold text-white" href="#">
-          <img
-            alt="Vue logo"
-            class="logo object-contain"
-            src="@/assets/logoEB.png"
-            width="150"
-            height="100"
-          />
-        </a>
-      </div>
-    </header>
+  <!-- Header -->
+<header class="bg-black border-b border-gray-300 h-40 w-full flex items-center">
+  <!-- Contenedor principal -->
+  <div class="flex justify-between items-center w-full px-6">
+
+    <!-- 🔹 Logo izquierda -->
+    <div class="flex items-center">
+      <RouterLink
+        to="/"
+        class="flex items-center font-semibold text-white hover:opacity-80 transition"
+      >
+        <img
+          alt="Logo Grupo EB"
+          class="object-contain cursor-pointer h-40 w-auto"
+          src="@/assets/logoEB.png"
+        />
+      </RouterLink>
+    </div>
+
+    <!-- 🔹 Botón cerrar sesión derecha -->
+    <div class="flex items-center">
+      <button
+        @click="cerrarSesion"
+        class="flex items-center gap-2 hover:opacity-80 transition"
+      >
+        <img
+          alt="Cerrar sesión"
+          class="object-contain cursor-pointer h-8 w-8"
+          src="@/assets/cerrarSesion.png"
+        />
+        <span class="text-white text-sm font-medium">Cerrar Sesión</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+
     <!-- Fin Header -->
 
     <!-- Main -->
@@ -31,3 +56,13 @@
     <!-- Fin Footer -->
   </div>
 </template>
+
+<script setup>
+import { useAuthStore } from '@/stores/authStore' // Ajusta la ruta según tu proyecto
+
+const auth = useAuthStore()
+
+const cerrarSesion = () => {
+  auth.logout()
+}
+</script>

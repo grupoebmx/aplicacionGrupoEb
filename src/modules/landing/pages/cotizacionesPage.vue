@@ -34,7 +34,7 @@
 
       <form @submit.prevent="insertarCotizacion">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-2xl font-bold font-[Inter]">Visualizar cotizaciones</h2>
+        <h2 class="text-2xl font-bold font-[Inter]">Cotizaciones</h2>
         <router-link to="/listaCotizaciones" class="btn btn-active btn-success">
         Visualizar cotizaciones
         </router-link>
@@ -117,18 +117,18 @@
       <table class="w-full border border-gray-300 mt-2 rounded text-xs">
         <thead>
           <tr class="bg-gray-200 text-center">
-            <th class="p-1 border">Largo</th>
-            <th class="p-1 border">Ancho</th>
-            <th class="p-1 border">Alto</th>
-            <th class="p-1 border">Ceja</th>
+            <th class="p-1 border">Largo cm</th>
+            <th class="p-1 border">Ancho cm</th>
+            <th class="p-1 border">Alto cm</th>
+            <th class="p-1 border">Ceja cm</th>
           </tr>
         </thead>
         <tbody>
           <tr class="text-center">
-            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded" v-model="largo" /></td>
-            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded" v-model="ancho" /></td>
-            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded" v-model="alto" /></td>
-            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded" v-model.number="ceja" /></td>
+            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model="largo" /></td>
+            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model="ancho" /></td>
+            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model="alto" /></td>
+            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model.number="ceja" /></td>
           </tr>
         </tbody>
       </table>
@@ -319,7 +319,7 @@
                     type="text"
                     v-model="form.descripcion"
                     placeholder="Descripción"
-                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight bg-white"
                   />
                 </div>
 
@@ -347,7 +347,7 @@
                     type="text"
                     v-model="form.producto"
                     placeholder="Producto"
-                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-full leading-tight"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-full leading-tight bg-white"
 
                   />
                 </div>
@@ -359,7 +359,7 @@
                     type="text"
                     v-model="form.guia"
                     placeholder="Guía"
-                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-full leading-tight"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-full leading-tight bg-white"
                   />
                 </div>
 
@@ -429,7 +429,7 @@
         list="pegadoOptions"
         v-model="form.pegado"
         placeholder="Selecciona o escribe"
-        class="border border-gray-300 rounded-md px-2 h-8 text-sm w-full leading-tight"
+        class="border border-gray-300 rounded-md px-2 h-8 text-sm w-full leading-tight bg-white"
       />
       <datalist id="pegadoOptions">
         <option value="Automático 1300"></option>
@@ -446,28 +446,28 @@
   <div class="text-center text-xs font-semibold mb-1">Tintas</div>
 
   <div class="grid gap-1 w-full" style="grid-template-columns: repeat(4, minmax(100px, 1fr)) auto;">
-    <select v-model="tinta1" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full">
+    <select v-model="tinta1" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full bg-white">
       <option value="">Tinta 1</option>
       <option v-for="t in tinta" :key="t.id_tinta" :value="t.id_tinta">
         {{ t.gcmi }}
       </option>
     </select>
 
-    <select v-model="tinta2" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full">
+    <select v-model="tinta2" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full bg-white">
       <option value="">Tinta 2</option>
       <option v-for="t in tinta" :key="t.id_tinta" :value="t.id_tinta">
         {{ t.gcmi }}
       </option>
     </select>
 
-    <select v-model="tinta3" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full">
+    <select v-model="tinta3" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full bg-white">
       <option value="">Tinta 3</option>
       <option v-for="t in tinta" :key="t.id_tinta" :value="t.id_tinta">
         {{ t.gcmi }}
       </option>
     </select>
 
-    <select v-model="tinta4" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full">
+    <select v-model="tinta4" class="border border-gray-300 rounded-md px-1 h-7 text-xs w-full bg-white">
       <option value="">Tinta 4</option>
       <option v-for="t in tinta" :key="t.id_tinta" :value="t.id_tinta">
         {{ t.gcmi }}
@@ -547,7 +547,7 @@
       <div class="table-cell p-1 border border-gray-300 rounded">
         <label for="clave" class="block text-sm font-medium text-gray-700">Clave</label>
         <input type="text" id="clave" name="clave" placeholder="Ingresa la clave" v-model="form.clave"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 sm:text-sm">
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 sm:text-sm bg-white">
       </div>
 
 
@@ -572,7 +572,7 @@
         type="text"
         v-model="form.grabado"
         placeholder="Número de grabado"
-        class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-full text-center"
+        class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-full text-center bg-white"
 
       />
     </div>
@@ -617,7 +617,7 @@
   </div>
     <div class="flex-none w-27 p-1 border border-gray-300 rounded">
     <div class="text-center text-xs font-semibold mb-1">Cantidad</div>
-    <input type="number" v-model="cantidad" min="0" class="border rounded-md px-1 py-1 h-8 w-full text-sm text-center" />
+    <input type="number" v-model="cantidad" min="0" class="border rounded-md px-1 py-1 h-8 w-full text-sm text-center bg-white" />
   </div>
   <div class="flex-none w-27 p-1 border border-gray-300 rounded">
     <div class="text-center text-xs font-semibold mb-1">Cartón</div>
@@ -632,7 +632,7 @@
       type="number"
       v-model="tintas"
       min="0"
-      class="border rounded-md px-1 py-1 h-8 w-16 text-sm text-center flex-shrink-0"
+      class="border rounded-md px-1 py-1 h-8 w-16 text-sm text-center flex-shrink-0 bg-white"
       placeholder="Cant."
     />
     <input
@@ -668,7 +668,7 @@
 
   <div class="flex-none w-27 p-1 border border-gray-300 rounded">
     <div class="text-center text-xs font-semibold mb-1">Otros</div>
-    <input type="text" v-model="otros" class="border rounded-md px-1 py-1 h-8 w-full text-sm text-center" />
+    <input type="text" v-model="otros" class="border rounded-md px-1 py-1 h-8 w-full text-sm text-center bg-white" />
   </div>
 
   <div class="flex-none w-27 p-1 border border-gray-300 rounded">
@@ -683,7 +683,7 @@
 
   <div class="flex-none w-27 p-1 border border-gray-300 rounded">
     <div class="text-center text-xs font-semibold mb-1">Precio final</div>
-    <input type="text" :value="precioFinal" @input="onEditarPrecioFinal" class="border rounded-md px-1 py-1 h-8 w-full text-sm text-center" />
+    <input type="text" v-model="precioFinal"  @input="precioEditado = true" class="border rounded-md px-1 py-1 h-8 w-full text-sm text-center bg-white" />
   </div>
           <!-- Botón para agregar producto -->
   <div class="p-0.5 flex items-center justify-start">
@@ -928,7 +928,7 @@ const generarPDFCotizacionProfesional = (cotizacion, cliente, productosDetalle, 
 
   yPosition += 15
 
-  // --- DATOS DEL CLIENTE - MEJORADO ---
+  // --- DATOS DEL CLIENTE - MANTENER COMO ESTÁ ---
   const marcoY = yPosition - 4
   doc.setFontSize(10)
   doc.setFont('helvetica', 'bold')
@@ -993,10 +993,10 @@ const generarPDFCotizacionProfesional = (cotizacion, cliente, productosDetalle, 
 
   yPosition += 15
 
-  // --- TABLA DE PRODUCTOS CON LOS CAMPOS DEL ENDPOINT ---
+  // --- TABLA DE PRODUCTOS - AJUSTADA AL MISMO ANCHO QUE DATOS DEL CLIENTE ---
   doc.setFont('helvetica', 'bold')
   doc.text('DETALLE DE PRODUCTOS', 12, yPosition)
-  doc.line(12, yPosition + 1, 198, yPosition + 1)
+  doc.line(12, yPosition + 1, 198, yPosition + 1) // Misma longitud que datos del cliente
   yPosition += 7
 
   // Headers de la tabla
@@ -1010,23 +1010,32 @@ const generarPDFCotizacionProfesional = (cotizacion, cliente, productosDetalle, 
     'Precio Unitario',
   ]
 
-  // Ajustar widths para las 7 columnas
-  const widths = [40, 25, 20, 25, 20, 20, 25]
+  // Ajustar widths para ocupar los 190mm (mismo ancho que datos del cliente)
+  const totalWidthAvailable = 190; // Mismo ancho que el rectángulo de datos del cliente
+  const widths = [55, 25, 20, 25, 20, 20, 25] // Ajusté la primera columna para ocupar más espacio
+
+  // Ajustar el último width para que la suma sea exactamente 190mm
+  const totalCurrentWidth = widths.reduce((sum, width) => sum + width, 0);
+  widths[widths.length - 1] += totalWidthAvailable - totalCurrentWidth;
+
   const yStart = yPosition + 1
-  let x = 12
+  let x = 12 // Mismo inicio que datos del cliente
 
   // DIBUJAR HEADERS
   doc.setFontSize(9)
   doc.setFont('helvetica', 'bold')
-  headers.forEach((h) => {
-    doc.rect(x, yStart, widths[headers.indexOf(h)], 7)
+  headers.forEach((h, index) => {
+    doc.rect(x, yStart, widths[index], 7)
     // Ajustar texto para columnas largas
     let textoAjustado = h
     if (h === 'Precio Unitario') {
       textoAjustado = 'P.Unitario'
     }
-    doc.text(textoAjustado, x + 2, yStart + 4.5)
-    x += widths[headers.indexOf(h)]
+    // Centrar texto
+    const textWidth = doc.getTextWidth(textoAjustado)
+    const centerX = x + (widths[index] - textWidth) / 2
+    doc.text(textoAjustado, centerX, yStart + 4.5)
+    x += widths[index]
   })
 
   // DIBUJAR FILAS CON LOS DATOS DEL ENDPOINT
@@ -1079,30 +1088,30 @@ x += widths[2]
     yFila += 7
   })
 
-  yPosition =  + 190
+  yPosition = yFila + 50
 
-
-  // --- OBSERVACIONES Y TOTALES (COMPACTOS) ---
-  doc.rect(35, yPosition, 140, 30) // Altura reducida
+  // --- OBSERVACIONES - AJUSTADA AL MISMO ANCHO ---
+  doc.rect(12, yPosition, 190, 30) // Mismo ancho que datos del cliente (190mm)
   doc.setFontSize(12)
-  doc.text('Observaciones:', 36, yPosition + 5)
+  doc.text('Observaciones:', 13, yPosition + 5)
 
   yPosition += 32
-  // --- BLOQUE DE OBSERVACIONES Y FIRMA (COMPACTOS) ---
+
+  // --- BLOQUE DE OBSERVACIONES Y FIRMA - AJUSTADO AL MISMO ANCHO ---
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(9)
 
-  const obsX = 35
+  const obsX = 12 // Mismo inicio que datos del cliente
   const obsY = yPosition
-  const obsWidth = 140
-  const obsHeight = 45 // Altura aumentada para que quepa el logo
+  const obsWidth = 190 // Mismo ancho que datos del cliente
+  const obsHeight = 45
 
   // Rectángulo principal OBSERVACIONES
   doc.rect(obsX, obsY, obsWidth, obsHeight)
 
   // Texto dentro del bloque OBSERVACIONES
   doc.setFont('times', 'bold')
-  doc.setFontSize(12) // Font size más pequeño
+  doc.setFontSize(12)
 
   const lineasObservaciones = [
     '*  Precios más IVA.',
@@ -1116,7 +1125,6 @@ x += widths[2]
 
   const textoDividido = doc.splitTextToSize(lineasObservaciones, obsWidth - 4)
   doc.text(textoDividido, obsX + 2, obsY + 4)
-
 
   // --- GUARDAR PDF CON NOMBRE PERSONALIZADO ---
   const nombreArchivo = `cotizacion-${numeroFormateado}-${cliente?.nombre_empresa || cliente?.razon_social || 'cliente'}.pdf`
@@ -1150,8 +1158,8 @@ const categoria = ref('')
 const rango = ref('')
 const cantidad = ref ()
 
-const precioFinal = ref(0)
-const precioEditado = ref(false)
+
+
 
 
 
@@ -1241,7 +1249,7 @@ const precioTinta= ref({
 
 const obtenerPreciosTintas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/tinta_cantidad');
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/tinta_cantidad');
     const data = res.data;
     precioTinta.value = {
       precioTinta1: parseFloat(data.find(d => d.id === 1)?.precio || 0),
@@ -1304,7 +1312,7 @@ const porcentajes = ref({
 
 const obtenerPorcentaje = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/porcentajeCantidad');
+    const res = await axios.get('http://localhost:3000/api/porcentajeCantidad');
     const data = res.data;
 
     porcentajes.value = {
@@ -1370,7 +1378,7 @@ const precioMaquinas = ref({
 
 const obtenerPreciosMaquinas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/maquina_cantidad');
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/maquina_cantidad');
     const data = res.data;
     precioMaquinas.value = {
       precioMaquina1: parseFloat(data.find(d => d.id === 1)?.precio || 0),
@@ -1425,7 +1433,7 @@ const precioPegado = ref({
 
 const obtenerPreciosPegado = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/pegado_cantidad');
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/pegado_cantidad');
     const data = res.data;
     precioPegado.value = {
       precioPegado1: parseFloat(data.find(d => d.id === 1)?.precio || 0),
@@ -1465,43 +1473,6 @@ const precioPegadoFinal = computed(() => {
 })
 
 
-//variables reactivas para utilidad
-
-const obtenerUtilidad = async () => {
-  try {
-    if (areaTotal.value <= 0 || cantidad.value <= 0) {
-      utilidad.value = 0
-      categoria.value = ''
-      rango.value = ''
-      return
-    }
-
-    const payload = {
-      area: parseFloat(areaTotal.value),
-      cantidad: parseInt(cantidad.value)
-    }
-
-    const res = await axios.post('https://apisprueba.onrender.com/api/utilidad/calcular', payload)
-    const data = res.data
-
-    utilidad.value = data.precioUtilidad
-    categoria.value = data.categoria
-    rango.value = data.rango
-
-    console.log(' Utilidad calculada:', data)
-
-  } catch (err) {
-    console.error('Error al obtener utilidad:', err)
-    utilidad.value = 0
-    categoria.value = ''
-    rango.value = ''
-  }
-}
-
-watch([areaTotal, cantidad], () => {
-  obtenerUtilidad()
-})
-
 
 //variables reactivas para fijos
 
@@ -1515,7 +1486,7 @@ const fijosValor = ref({
 
 const obtenerFijos = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/fijos_cantidad');
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/fijos_cantidad');
     const data = res.data;
 
     fijosValor.value = {
@@ -1565,7 +1536,7 @@ const envioValor = ref({
 
 const obtenerEnvio = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/buscarTabla/envio_cantidad');
+    const res = await axios.get('http://localhost:3000/api/buscarTabla/envio_cantidad');
     const data = res.data;
 
     envioValor.value = {
@@ -1619,7 +1590,7 @@ const guardarMaterial = async () => {
     precio: precioModal.value,
   }
   try {
-    await axios.post('https://apisprueba.onrender.com/api/materiales/insertar', nuevoMaterial)
+    await axios.post('http://localhost:3000/api/materiales/insertar', nuevoMaterial)
     materiales.value.push(nuevoMaterial)
 
     closeModal()
@@ -1632,7 +1603,7 @@ const guardarMaterial = async () => {
 
 const obtenerMateriales = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/materiales')
+    const res = await axios.get('http://localhost:3000/api/materiales')
     materiales.value = res.data
     console.log('Materiales cargados:', materiales.value)
   } catch (error) {
@@ -1642,7 +1613,7 @@ const obtenerMateriales = async () => {
 
 const obtenerClientes = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/clientes')
+    const res = await axios.get('http://localhost:3000/api/clientes')
     clientes.value = res.data
   } catch (error) {
     console.error('Error al obtener clientes:', error)
@@ -1705,7 +1676,7 @@ const guardarTinta = async () => {
   }
 
   try {
-    const res = await axios.post('https://apisprueba.onrender.com/api/tintas/insertar', {
+    const res = await axios.post('http://localhost:3000/api/tintas/insertar', {
       gcmi: gcmi.value,
       nombre_tinta: nombreTinta.value
     })
@@ -1729,7 +1700,7 @@ const guardarTinta = async () => {
 
 const obtenerTintas = async () => {
   try {
-    const res = await axios.get('https://apisprueba.onrender.com/api/tintas')
+    const res = await axios.get('http://localhost:3000/api/tintas')
     tinta.value = res.data
   } catch (error) {
     console.error('Error al obtener tintas:', error)
@@ -1827,7 +1798,7 @@ async function insertarProducto() {
 
   try {
     const response = await axios.post(
-      'https://apisprueba.onrender.com/api/productos/insertar',
+      'http://localhost:3000/api/productos/insertar',
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
@@ -1855,6 +1826,41 @@ const imageData2 = ref(null)
 const imageData3 = ref(null)
 const imageData4 = ref(null)
 
+const obtenerUtilidad = async () => {
+  try {
+    if (areaTotal.value <= 0 || cantidad.value <= 0) {
+      utilidad.value = 0
+      categoria.value = ''
+      rango.value = ''
+      return
+    }
+
+    const payload = {
+      area: parseFloat(areaTotal.value),
+      cantidad: parseInt(cantidad.value)
+    }
+
+    const res = await axios.post('http://localhost:3000/api/utilidad/calcular', payload)
+    const data = res.data
+
+    utilidad.value = data.precioUtilidad
+    categoria.value = data.categoria
+    rango.value = data.rango
+
+    console.log(' Utilidad calculada:', data)
+
+  } catch (err) {
+    console.error('Error al obtener utilidad:', err)
+    utilidad.value = 0
+    categoria.value = ''
+    rango.value = ''
+  }
+}
+
+watch([areaTotal, cantidad], () => {
+  obtenerUtilidad()
+})
+
 
 
 async function guardarProducto() {
@@ -1880,7 +1886,7 @@ async function insertarCotizacion() {
   };
 
   try {
-    const res = await axios.post('https://apisprueba.onrender.com/api/cotizaciones/insertar', payload);
+    const res = await axios.post('http://localhost:3000/api/cotizaciones/insertar', payload);
     const idCotizacion = res.data.idCotizacion;
     console.log('ID cotización recuperada:', idCotizacion);
 
@@ -1904,7 +1910,7 @@ async function insertarCotizacion() {
 
 const obtenerInfoPDF = async (idCotizacion) => {
   try {
-    const response = await axios.get(`https://apisprueba.onrender.com/api/cotizaciones/detalle/${idCotizacion}`);
+    const response = await axios.get(`http://localhost:3000/api/cotizaciones/detalle/${idCotizacion}`);
 
     if (response.data && response.data.length > 0) {
       return response.data;
@@ -1933,18 +1939,17 @@ const precioVenta = computed(() => {
   ).toFixed(2)
 })
 
-// Actualizamos precioFinal automáticamente solo si el usuario NO lo ha editado
+
+// 🔹 Este sí editable
+const precioFinal = ref(precioVenta.value)
+const precioEditado = ref(false)
+
+// 🔹 Solo se sincroniza si el usuario no lo ha tocado
 watch(precioVenta, (nuevoValor) => {
   if (!precioEditado.value) {
-    precioFinal.value = parseFloat(nuevoValor).toFixed(2) || 0
+    precioFinal.value = nuevoValor
   }
 })
-
-// Función para manejar input manual de precioFinal
-function onEditarPrecioFinal(e) {
-  precioEditado.value = true
-  precioFinal.value = parseFloat(e.target.value).toFixed(2) || 0
-}
 
 
 const generarPDFCotizacion = (idCotizacion, productosDetalle, cantidadTintas) => {
