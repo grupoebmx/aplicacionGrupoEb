@@ -459,7 +459,7 @@ const cargarDatos = async () => {
 
     // Obtener la cotización
     const { data: cot } = await axios.get(
-      `http://localhost:3000/api/buscarTabla/cotizaciones/${idCotizacion}`
+      `https://backendgrupoeb.onrender.com/api/buscarTabla/cotizaciones/${idCotizacion}`
     )
 
     if (!cot) {
@@ -472,7 +472,7 @@ const cargarDatos = async () => {
 
     // Obtener los productos de la cotización
     const { data: det } = await axios.get(
-  `http://localhost:3000/api/detalleCotizaciones/${idCotizacion}`
+  `https://backendgrupoeb.onrender.com/api/detalleCotizaciones/${idCotizacion}`
     )
     productos.value = det
     console.log("Productos cargados:", productos.value)
@@ -486,7 +486,7 @@ const cargarDatos = async () => {
     }
 
     // Obtener el cliente asociado a la cotización
-    const { data: cli } = await axios.get(`http://localhost:3000/api/clientes/${numCliente}`)
+    const { data: cli } = await axios.get(`https://backendgrupoeb.onrender.com/api/clientes/${numCliente}`)
 
     if (cli && cli.length > 0) {
       cliente.value = cli[0]
@@ -518,7 +518,7 @@ const formatoMoneda = (valor) => {
 
 const cargarIva = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/iva');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/iva');
     const data = res.data;
 
     ivaPorcentaje.value = parseFloat(data.find(d => d.id === 1)?.porcentaje || 0);
@@ -617,7 +617,7 @@ const insertarPedido = async () => {
       }))
     };
 
-    const { data } = await axios.post("http://localhost:3000/api/pedidos/insertar", payload);
+    const { data } = await axios.post("https://backendgrupoeb.onrender.com/api/pedidos/insertar", payload);
 
     console.log("✅ Pedido insertado:", data);
     mostrarAlerta("success", `Pedido creado correctamente. No. pedido: ${data.no_pedido}`);

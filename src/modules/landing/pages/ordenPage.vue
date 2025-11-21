@@ -1059,7 +1059,7 @@ import { ref, onMounted } from 'vue'
 const productos = ref([])
 
 onMounted(async () => {
-  const res = await fetch('http://localhost:3000/api/productos')
+  const res = await fetch('https://backendgrupoeb.onrender.com/api/productos')
   productos.value = await res.json()
 })
 

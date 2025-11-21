@@ -440,7 +440,7 @@ function mostrarAlerta(tipo, mensaje) {
 
 async function cargarPedidosPendientes() {
   try {
-    const { data } = await axios.get('http://localhost:3000/api/pedidos-pendientes');
+    const { data } = await axios.get('https://backendgrupoeb.onrender.com/api/pedidos-pendientes');
     pedidosPendientes.value = data;
   } catch (error) {
     console.error('❌ Error al cargar pedidos pendientes:', error);
@@ -457,7 +457,7 @@ watch(pedidoSeleccionado, async (nuevoPedido) => {
 
   try {
     // 1. Cargar estado de cuenta
-    const { data } = await axios.get(`http://localhost:3000/api/pedido-estado/${nuevoPedido}`)
+    const { data } = await axios.get(`https://backendgrupoeb.onrender.com/api/pedido-estado/${nuevoPedido}`)
     estadoCuenta.value = data
     console.log('📊 Estado de cuenta:', data)
 
@@ -499,7 +499,7 @@ async function cargarDatosFacturacion(nuevoPedido) {
   }
 
   try {
-    const { data } = await axios.get(`http://localhost:3000/api/remision/${nuevoPedido}`);
+    const { data } = await axios.get(`https://backendgrupoeb.onrender.com/api/remision/${nuevoPedido}`);
     datosFacturacion.value = data;
     console.log('📄 Datos de facturación:', data);
     return data;
@@ -576,7 +576,7 @@ async function guardarPago() {
     };
 
     // Enviar pago
-    const response = await axios.post('http://localhost:3000/api/pagos', payload);
+    const response = await axios.post('https://backendgrupoeb.onrender.com/api/pagos', payload);
 
     // Mostrar mensaje según si hay productos en almacén o no
     if (response.data.tiene_productos_almacen) {
@@ -590,7 +590,7 @@ async function guardarPago() {
 
     // Intentar recargar estado de cuenta
     try {
-      const { data } = await axios.get(`http://localhost:3000/api/pedido-estado/${pedidoSeleccionado.value}`);
+      const { data } = await axios.get(`https://backendgrupoeb.onrender.com/api/pedido-estado/${pedidoSeleccionado.value}`);
       estadoCuenta.value = data;
     } catch (error) {
       // Si falla, limpiar estado de cuenta
@@ -946,7 +946,7 @@ const generarPDFEstadoCuenta = () => {
 
 async function obtenerFolioConsecutivo() {
   try {
-    const response = await fetch('http://localhost:3000/api/folios/remision');
+    const response = await fetch('https://backendgrupoeb.onrender.com/api/folios/remision');
 
     // Verificar si la respuesta es exitosa
     if (!response.ok) {

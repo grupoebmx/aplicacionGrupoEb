@@ -37,7 +37,7 @@ const compras = ref([])
 
 const obtenerOrdenes = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/orden_compra')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/orden_compra')
 
     compras.value = res.data.map((o) => ({
       no_orden: o.id,

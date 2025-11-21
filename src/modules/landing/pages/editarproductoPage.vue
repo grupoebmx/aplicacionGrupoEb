@@ -392,6 +392,40 @@
         <option value="KT">KT - KIT</option>
       </select>
     </div>
+
+     <div class="table-cell p-1 border border-gray-300 rounded w-1/3">
+                  <div class="text-center text-xs font-semibold mb-1">Empaque</div>
+                  <input
+                    type="text"
+                    v-model="form.empaque"
+                    placeholder="Empaque"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight"
+                  />
+                </div>
+
+                <!-- Paq X -->
+                <div class="table-cell p-1 border border-gray-300 rounded w-1/3">
+                  <div class="text-center text-xs font-semibold mb-1">Paq X</div>
+                  <input
+                    type="text"
+                    v-model="form.paqX"
+                    placeholder="Paq X"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight"
+                  />
+                </div>
+
+                <!-- Cantidad -->
+                <div class="table-cell p-1 border border-gray-300 rounded w-1/3">
+                  <div class="text-center text-xs font-semibold mb-1">Cantidad</div>
+                  <input
+                    type="number"
+                    v-model="form.cantidad"
+                    placeholder="Cantidad"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight"
+                  />
+                </div>
+
+
   </div>
 </div>
 
@@ -642,7 +676,10 @@ const form = reactive({
   identificador: '',
   precio_unitario: '',
   satclaveproductoservicio: '',
-  satclaveunidad: ''
+  satclaveunidad: '',
+  empaque: '',
+  paqX: '',
+  cantidad: ''
 })
 
 // Imágenes

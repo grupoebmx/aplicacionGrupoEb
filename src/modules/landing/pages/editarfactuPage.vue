@@ -309,7 +309,7 @@ const form = reactive({
 const cargarFactura = async () => {
   try {
     const { numero_pedido } = route.params
-    const res = await axios.get(`http://localhost:3000/api/facturacion-envio/${numero_pedido}`)
+    const res = await axios.get(`https://backendgrupoeb.onrender.com/api/facturacion-envio/${numero_pedido}`)
     if (res.data && res.data.length > 0) {
       Object.assign(form, res.data[0])
     } else {
@@ -324,7 +324,7 @@ const cargarFactura = async () => {
 const actualizarFactura = async () => {
   try {
     const { numero_pedido } = route.params
-    await axios.put(`http://localhost:3000/api/facturacion-envio/actualizar/${numero_pedido}`, form)
+    await axios.put(`https://backendgrupoeb.onrender.com/api/facturacion-envio/actualizar/${numero_pedido}`, form)
 
     router.push('/TablaF')
   } catch (error) {

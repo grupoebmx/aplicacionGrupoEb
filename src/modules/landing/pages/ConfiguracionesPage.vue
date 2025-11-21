@@ -607,7 +607,7 @@ function mostrarAlerta(tipo, mensaje) {
 
 const obtenerPorcentajes = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/porcentajeCantidad')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/porcentajeCantidad')
     porcentajes.value = res.data
   } catch (error) {
     console.error('Error al obtener porcentajes:', error)
@@ -616,7 +616,7 @@ const obtenerPorcentajes = async () => {
 
 const obtenerTintas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/tinta_cantidad')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/tinta_cantidad')
     tintas.value = res.data
   } catch (error) {
     console.error('Error al obtener tintas:', error)
@@ -625,7 +625,7 @@ const obtenerTintas = async () => {
 
 const obtenerMaquinas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/maquina_cantidad')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/maquina_cantidad')
     maquinas.value = res.data
   } catch (error) {
     console.error('Error al obtener maquinas:', error)
@@ -634,7 +634,7 @@ const obtenerMaquinas = async () => {
 
 const obtenerPegados = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/pegado_cantidad')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/pegado_cantidad')
     pegados.value = res.data
   } catch (error) {
     console.error('Error al obtener pegados:', error)
@@ -643,7 +643,7 @@ const obtenerPegados = async () => {
 
 const obtenerFijos = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/fijos_cantidad')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/fijos_cantidad')
     fijos.value = res.data
   } catch (error) {
     console.error('Error al obtener fijos:', error)
@@ -652,7 +652,7 @@ const obtenerFijos = async () => {
 
 const obtenerUtilidad = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/utilidades')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/utilidades')
     utilidad.value = res.data
   } catch (error) {
     console.error('Error al obtener utilidad:', error)
@@ -661,7 +661,7 @@ const obtenerUtilidad = async () => {
 
 const obtenerEnvio = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/envio_cantidad')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/envio_cantidad')
     envio.value = res.data
   } catch (error) {
     console.error('Error al obtener envio:', error)
@@ -670,7 +670,7 @@ const obtenerEnvio = async () => {
 
 const obtenerListaTintas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/tintas')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/tintas')
     listaTintas.value = res.data
   } catch (error) {
     console.error('Error al obtener lista de tintas:', error)
@@ -679,7 +679,7 @@ const obtenerListaTintas = async () => {
 
 const obtenerListaMateriales = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/materiales')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/materiales')
     listaMateriales.value = res.data
   } catch (error) {
     console.error('Error al obtener lista de materiales:', error)
@@ -688,7 +688,7 @@ const obtenerListaMateriales = async () => {
 
 const obtenerListaCajas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/categoria_cajas')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/categoria_cajas')
     listaCajas.value = res.data
   } catch (error) {
     console.error('Error al obtener lista de cajas:', error)
@@ -697,7 +697,7 @@ const obtenerListaCajas = async () => {
 
 const obtenerUsuarios = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/usuarios')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/usuarios')
     listaUsuarios.value = res.data
     console.log(res.data)
   } catch (error) {
@@ -782,7 +782,7 @@ const guardarCambiosMateriales = async () => {
 
     // Llamada al endpoint PUT
     await axios.put(
-      `http://localhost:3000/api/materiales/${formDataMateriales.value.clave}`,
+      `https://backendgrupoeb.onrender.com/api/materiales/${formDataMateriales.value.clave}`,
       body
     );
 
@@ -809,7 +809,7 @@ const guardarCambiosCajas = async () => {
 
     // Llamada al endpoint PUT para actualizar la caja
     await axios.put(
-      `http://localhost:3000/api/categoria_cajas/${formDataCajas.value.id}`,
+      `https://backendgrupoeb.onrender.com/api/categoria_cajas/${formDataCajas.value.id}`,
       body
     );
 
@@ -839,7 +839,7 @@ const guardarCambiosUsuarios = async () => {
     };
 
     await axios.put(
-      `http://localhost:3000/api/usuarios/${formDataUsuarios.value.id}`,
+      `https://backendgrupoeb.onrender.com/api/usuarios/${formDataUsuarios.value.id}`,
       body
     );
 
@@ -862,7 +862,7 @@ const guardarCambios = async () => {
 
     switch (seccionActiva.value) {
       case 'porcentajes': {
-        url = `http://localhost:3000/api/porcentajeCantidad/actualizar/${formData.value.id}`
+        url = `https://backendgrupoeb.onrender.com/api/porcentajeCantidad/actualizar/${formData.value.id}`
         body = { porcentaje: formData.value.porcentaje }
         break
       }
@@ -885,7 +885,7 @@ const guardarCambios = async () => {
           return
         }
 
-        url = `http://localhost:3000/api/general/actualizar/${tabla}/${formData.value.id}`
+        url = `https://backendgrupoeb.onrender.com/api/general/actualizar/${tabla}/${formData.value.id}`
         body = { precio: formData.value.precio }
         break
       }
@@ -940,7 +940,7 @@ const guardarCambios = async () => {
 
 const borrarTinta = async (id_tinta) => {
   try {
-    await axios.delete(`http://localhost:3000/api/tintas/borrar/${id_tinta}`)
+    await axios.delete(`https://backendgrupoeb.onrender.com/api/tintas/borrar/${id_tinta}`)
     mostrarAlerta('success', 'Tinta eliminada correctamente')
     await obtenerListaTintas()
   } catch (error) {
@@ -952,7 +952,7 @@ const borrarTinta = async (id_tinta) => {
 const borrarMaterial = async (clave) => {
   try {
     // Intentamos eliminar el material
-    await axios.delete(`http://localhost:3000/api/materiales/borrar/${clave}`);
+    await axios.delete(`https://backendgrupoeb.onrender.com/api/materiales/borrar/${clave}`);
 
     // Si todo sale bien, mostramos alerta de éxito
     mostrarAlerta('success', 'Material eliminado correctamente');
@@ -972,7 +972,7 @@ const borrarMaterial = async (clave) => {
 
 const eliminarUsuario = async (id) => {
   try {
-    await axios.delete(`http://localhost:3000/api/usuarios/${id}`)
+    await axios.delete(`https://backendgrupoeb.onrender.com/api/usuarios/${id}`)
     mostrarAlerta('success', 'Usuario eliminado correctamente')
     obtenerUsuarios()
   } catch (error) {
@@ -990,7 +990,7 @@ const cambiarContrasena = (usuario) => {
 const confirmarCambioContrasena = async () => {
   try {
     await axios.put(
-      `http://localhost:3000/api/usuarios/${usuarioSeleccionado.value.id}/cambiar-contrasenia`,
+      `https://backendgrupoeb.onrender.com/api/usuarios/${usuarioSeleccionado.value.id}/cambiar-contrasenia`,
       { nuevaContrasenia: nuevaContrasena.value }
     )
     mostrarAlerta('success', 'Contraseña actualizada correctamente')

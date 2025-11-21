@@ -361,7 +361,7 @@ const formasPago = [
 // --- Función para obtener facturas existentes ---
 const obtenerFacturas = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/facturacion-envio/todos')
+    const res = await fetch('https://backendgrupoeb.onrender.com/api/facturacion-envio/todos')
     facturas.value = await res.json()
   } catch (error) {
     console.error('Error al obtener facturas:', error)
@@ -386,7 +386,7 @@ const submitForm = async () => {
 
   loading.value = true
   try {
-    const response = await fetch('http://localhost:3000/api/facturacion-envio/insertar', {
+    const response = await fetch('https://backendgrupoeb.onrender.com/api/facturacion-envio/insertar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData.value),

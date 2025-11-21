@@ -344,7 +344,7 @@ const datosProveedor = computed(() => {
 // Obtener proveedores desde el backend
 const obtenerProveedores = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/buscarTabla/proveedores');
+    const res = await fetch('https://backendgrupoeb.onrender.com/api/buscarTabla/proveedores');
     const data = await res.json();
     proveedores.value = data;
     console.log('Proveedores cargados:', data);
@@ -362,7 +362,7 @@ const cargarDatos = async () => {
 
     // Obtener los detalles del pedido
     const { data: detalles } = await axios.get(
-      `http://localhost:3000/api/pedidos/${idPedido}/detalles`
+      `https://backendgrupoeb.onrender.com/api/pedidos/${idPedido}/detalles`
     );
 
 
@@ -433,7 +433,7 @@ const subtotal = computed(() =>
 
 const cargarIva = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/iva');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/iva');
     const data = res.data;
 
     ivaPorcentaje.value = parseFloat(data.find(d => d.id === 1)?.porcentaje || 0);
@@ -493,7 +493,7 @@ const guardarOrdenCompra = async () => {
     };
 
     // Enviar al backend
-    const { data } = await axios.post("http://localhost:3000/api/ordenes/insertar", payload);
+    const { data } = await axios.post("https://backendgrupoeb.onrender.com/api/ordenes/insertar", payload);
 
     console.log("Orden de compra guardada:", data);
     mostrarAlerta("success",`Orden de compra registrada correctamente`);

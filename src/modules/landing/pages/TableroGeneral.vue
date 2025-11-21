@@ -135,7 +135,7 @@
                 <!-- Orden Producción -->
                 <td class="px-3 py-4 text-center">
                   <div class="text-sm font-medium text-blue-600">
-                    {{ item.no_orden ? `OP-${item.no_orden}` : '-' }}
+                    {{ item.no_orden ? item.no_orden : 'N/A' }}
                   </div>
                 </td>
 
@@ -154,14 +154,14 @@
                 <!-- Acciones -->
                 <td class="px-3 py-4">
                   <div class="flex flex-col gap-1.5">
-                    <button
+                    <!-- <button
                       @click="generarCertificadoCalidadPDF(item)"
                       class="px-2 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed whitespace-nowrap"
                       :disabled="!item.no_orden"
                       title="Imprimir etiquetas"
                     >
                       🏷️ Etiquetas
-                    </button>
+                    </button> -->
                     <button
                       @click="imprimirEstadoCuenta(item)"
                       class="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed whitespace-nowrap"
@@ -230,7 +230,7 @@ const filtroEstado = ref('')
 // Cargar datos
 const cargarDatos = async () => {
   try {
-    const { data } = await axios.get('http://localhost:3000/api/tablero-produccion')
+    const { data } = await axios.get('https://backendgrupoeb.onrender.com/api/tablero-produccion')
     datos.value = data
     console.log('📊 Datos del tablero:', data)
   } catch (error) {
@@ -264,7 +264,7 @@ const pedidosEnProceso = computed(() => {
 })
 
 const pedidosCompletados = computed(() => {
-  return datos.value.filter(d => d.estado_orden === 'Completado').length
+  return datos.value.filter(d => d.estado_orden === 'Completada').length
 })
 
 const pedidosEnAlmacen = computed(() => {
@@ -346,7 +346,7 @@ const imprimirEstadoCuenta = async (item) => {
   }
 
   try {
-    const { data } = await axios.get(`http://localhost:3000/api/pedido-estado/${item.no_pedido}`)
+    const { data } = await axios.get(`https://backendgrupoeb.onrender.com/api/pedido-estado/${item.no_pedido}`)
     generarEstadoCuentaPDF(data)
   } catch (error) {
     console.error('Error al obtener estado de cuenta:', error)
@@ -365,8 +365,8 @@ const generarFactura = async (item) => {
   try {
     // Obtener datos de facturación y estado de cuenta
     const [estadoCuentaRes, facturacionRes] = await Promise.all([
-      axios.get(`http://localhost:3000/api/pedido-estado/${item.no_pedido}`),
-      axios.get(`http://localhost:3000/api/remision/${item.no_pedido}`)
+      axios.get(`https://backendgrupoeb.onrender.com/api/pedido-estado/${item.no_pedido}`),
+      axios.get(`https://backendgrupoeb.onrender.com/api/remision/${item.no_pedido}`)
     ])
 
     console.log('📋 Datos estado cuenta:', estadoCuentaRes.data)
@@ -740,7 +740,7 @@ doc.text('ventas@grupoeb.com.mx', 105, finalY + 12, { align: 'center' })
 
 async function obtenerFolioConsecutivo() {
   try {
-    const response = await fetch('http://localhost:3000/api/folios/remision');
+    const response = await fetch('https://backendgrupoeb.onrender.com/api/folios/remision');
 
     // Verificar si la respuesta es exitosa
     if (!response.ok) {
@@ -1094,298 +1094,298 @@ const numeroSimple = (num) => {
   return centenas[cen] + ' ' + numeroSimple(resto)
 }
 
-async function obtenerFolioConsecutivoCalidad() {
-  try {
-    const response = await fetch('http://localhost:3000/api/folios/calidad');
+// async function obtenerFolioConsecutivoCalidad() {
+//   try {
+//     const response = await fetch('http://localhost:3000/api/folios/calidad');
 
-    // Verificar si la respuesta es exitosa
-    if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
-    }
+//     // Verificar si la respuesta es exitosa
+//     if (!response.ok) {
+//       throw new Error(`Error HTTP: ${response.status}`);
+//     }
 
-    const data = await response.json();
-    console.log('Respuesta del API:', data); // Para debugging
+//     const data = await response.json();
+//     console.log('Respuesta del API:', data); // Para debugging
 
-    // Verificar que existe el folio en la respuesta
-    if (!data.folio) {
-      console.error('El API no devolvió un folio válido:', data);
-      return 'R-000'; // Valor por defecto
-    }
+//     // Verificar que existe el folio en la respuesta
+//     if (!data.folio) {
+//       console.error('El API no devolvió un folio válido:', data);
+//       return 'R-000'; // Valor por defecto
+//     }
 
-    return data.folio;
-  } catch (error) {
-    console.error('Error al obtener folio:', error);
-    // Retornar un folio por defecto en caso de error
-    return 'R-000';
-  }
-}
+//     return data.folio;
+//   } catch (error) {
+//     console.error('Error al obtener folio:', error);
+//     // Retornar un folio por defecto en caso de error
+//     return 'R-000';
+//   }
+// }
 
-const generarCertificadoCalidadPDF = () => {
-  try {
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'letter',
-    })
+// const generarCertificadoCalidadPDF = () => {
+//   try {
+//     const doc = new jsPDF({
+//       orientation: 'portrait',
+//       unit: 'mm',
+//       format: 'letter',
+//     })
 
-    let yPosition = 40
+//     let yPosition = 40
 
-    const img = new Image()
-    img.src = '/imagen/logo.jpg'
+//     const img = new Image()
+//     img.src = '/imagen/logo.jpg'
 
-    img.onload = function () {
-      continuarGeneracionCertificado(doc, yPosition, img)
-    }
+//     img.onload = function () {
+//       continuarGeneracionCertificado(doc, yPosition, img)
+//     }
 
-    img.onerror = function () {
-      console.warn('No se pudo cargar el logo, continuando sin imagen...')
-      continuarGeneracionCertificado(doc, yPosition, null)
-    }
-  } catch (error) {
-    console.error('Error al generar Certificado de Calidad PDF:', error)
-    mostrarAlerta('danger', 'Error al generar el Certificado: ' + error.message)
-  }
-}
+//     img.onerror = function () {
+//       console.warn('No se pudo cargar el logo, continuando sin imagen...')
+//       continuarGeneracionCertificado(doc, yPosition, null)
+//     }
+//   } catch (error) {
+//     console.error('Error al generar Certificado de Calidad PDF:', error)
+//     mostrarAlerta('danger', 'Error al generar el Certificado: ' + error.message)
+//   }
+// }
 
-const continuarGeneracionCertificado = async (doc, yPosition, img) => {
-  try {
+// const continuarGeneracionCertificado = async (doc, yPosition, img) => {
+//   try {
 
-     const folio = await obtenerFolioConsecutivoCalidad();
+//      const folio = await obtenerFolioConsecutivoCalidad();
 
-    // --- LOGO CENTRADO EN LA PARTE SUPERIOR ---
-    if (img) {
-      const pageWidth = doc.internal.pageSize.getWidth()
-      const imgWidth = 40
-      const imgX = (pageWidth - imgWidth) / 2
-      doc.addImage(img, 'JPEG', imgX, 15, imgWidth, 25)
-    }
+//     // --- LOGO CENTRADO EN LA PARTE SUPERIOR ---
+//     if (img) {
+//       const pageWidth = doc.internal.pageSize.getWidth()
+//       const imgWidth = 40
+//       const imgX = (pageWidth - imgWidth) / 2
+//       doc.addImage(img, 'JPEG', imgX, 15, imgWidth, 25)
+//     }
 
-    // --- FOLIO Y FECHA EN LA ESQUINA SUPERIOR DERECHA ---
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(10)
-    doc.text(`FOLIO: ${folio}`, 195, 20, { align: 'right' })
-    doc.setFontSize(9)
-    doc.text('12 Noviembre 2025', 195, 25, { align: 'right' })
+//     // --- FOLIO Y FECHA EN LA ESQUINA SUPERIOR DERECHA ---
+//     doc.setFont('helvetica', 'bold')
+//     doc.setFontSize(10)
+//     doc.text(`FOLIO: ${folio}`, 195, 20, { align: 'right' })
+//     doc.setFontSize(9)
+//     doc.text('12 Noviembre 2025', 195, 25, { align: 'right' })
 
-    // --- CERTIFICADO DE CALIDAD CENTRADO ---
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(16)
-    doc.text('CERTIFICADO DE CALIDAD', 105, 50, { align: 'center' })
+//     // --- CERTIFICADO DE CALIDAD CENTRADO ---
+//     doc.setFont('helvetica', 'bold')
+//     doc.setFontSize(16)
+//     doc.text('CERTIFICADO DE CALIDAD', 105, 50, { align: 'center' })
 
-    yPosition = 60
+//     yPosition = 60
 
-    // --- ENCABEZADOS SIN LÍNEAS ---
-    const tableX = 25
-    const tableWidth = 160
+//     // --- ENCABEZADOS SIN LÍNEAS ---
+//     const tableX = 25
+//     const tableWidth = 160
 
-    // Encabezados sin bordes
-    doc.setFontSize(10)
-    doc.setFont('helvetica', 'normal')
-    doc.text('Información Proveedor', tableX + tableWidth/4, yPosition, { align: 'center' })
-    doc.text('Información Cliente', tableX + 3*tableWidth/4, yPosition, { align: 'center' })
+//     // Encabezados sin bordes
+//     doc.setFontSize(10)
+//     doc.setFont('helvetica', 'normal')
+//     doc.text('Información Proveedor', tableX + tableWidth/4, yPosition, { align: 'center' })
+//     doc.text('Información Cliente', tableX + 3*tableWidth/4, yPosition, { align: 'center' })
 
-    yPosition += 5
+//     yPosition += 5
 
-    // --- TABLA DE INFORMACIÓN PROVEEDOR/CLIENTE CON BORDES ---
-    doc.setLineWidth(0.3)
-    doc.setDrawColor(0, 0, 0)
+//     // --- TABLA DE INFORMACIÓN PROVEEDOR/CLIENTE CON BORDES ---
+//     doc.setLineWidth(0.3)
+//     doc.setDrawColor(0, 0, 0)
 
-    const contentHeight = 22
+//     const contentHeight = 22
 
-    // Rectángulo con línea divisoria vertical
-    doc.rect(tableX, yPosition, tableWidth, contentHeight)
-    doc.line(tableX + tableWidth/2, yPosition, tableX + tableWidth/2, yPosition + contentHeight)
+//     // Rectángulo con línea divisoria vertical
+//     doc.rect(tableX, yPosition, tableWidth, contentHeight)
+//     doc.line(tableX + tableWidth/2, yPosition, tableX + tableWidth/2, yPosition + contentHeight)
 
-    yPosition += 4
+//     yPosition += 4
 
-    // Contenido Proveedor (Izquierda)
-    const proveedorLines = [
-      'Grupeb S.A. de C.V.',
-      'Rogelio Ledesma #102',
-      'Col. Cruz Vieja',
-      'Tlajomulco de Zuñiga, Jalisco cp. 45644',
-      '(33) 931259595'
-    ]
+//     // Contenido Proveedor (Izquierda)
+//     const proveedorLines = [
+//       'Grupeb S.A. de C.V.',
+//       'Rogelio Ledesma #102',
+//       'Col. Cruz Vieja',
+//       'Tlajomulco de Zuñiga, Jalisco cp. 45644',
+//       '(33) 931259595'
+//     ]
 
-    // Contenido Cliente (Derecha)
-    const clienteLines = [
-      'Take Flight Venture',
-      'Av Siempre viva 45287',
-      'Col. centro',
-      'Tlajomulco de Zuñiga, Jalisco cp. 45644',
-      '(33) 31803373'
-    ]
+//     // Contenido Cliente (Derecha)
+//     const clienteLines = [
+//       'Take Flight Venture',
+//       'Av Siempre viva 45287',
+//       'Col. centro',
+//       'Tlajomulco de Zuñiga, Jalisco cp. 45644',
+//       '(33) 31803373'
+//     ]
 
-    doc.setFontSize(8)
-    doc.setFont('helvetica', 'normal')
+//     doc.setFontSize(8)
+//     doc.setFont('helvetica', 'normal')
 
-    // Mostrar información en paralelo
-    for (let i = 0; i < proveedorLines.length; i++) {
-  // Proveedor (izquierda)
-  doc.text(proveedorLines[i], tableX + 3, yPosition + (i * 3.5), { align: 'left' })
+//     // Mostrar información en paralelo
+//     for (let i = 0; i < proveedorLines.length; i++) {
+//   // Proveedor (izquierda)
+//   doc.text(proveedorLines[i], tableX + 3, yPosition + (i * 3.5), { align: 'left' })
 
-  // Cliente (derecha)
-  doc.text(clienteLines[i], tableX + tableWidth/2 + 3, yPosition + (i * 3.5), { align: 'left' })
-}
+//   // Cliente (derecha)
+//   doc.text(clienteLines[i], tableX + tableWidth/2 + 3, yPosition + (i * 3.5), { align: 'left' })
+// }
 
-    yPosition += contentHeight
-    // --- CELDA INDEPENDIENTE PARA "INFORMACIÓN DEL PRODUCTO" ---
-      const headerCellX = tableX
-      const headerCellY = yPosition
-      const headerCellWidth = tableWidth
-      const headerCellHeight = 8
+//     yPosition += contentHeight
+//     // --- CELDA INDEPENDIENTE PARA "INFORMACIÓN DEL PRODUCTO" ---
+//       const headerCellX = tableX
+//       const headerCellY = yPosition
+//       const headerCellWidth = tableWidth
+//       const headerCellHeight = 8
 
-      // Dibujar la celda del encabezado
-      doc.setLineWidth(0.3)
-      doc.rect(headerCellX, headerCellY, headerCellWidth, headerCellHeight)
+//       // Dibujar la celda del encabezado
+//       doc.setLineWidth(0.3)
+//       doc.rect(headerCellX, headerCellY, headerCellWidth, headerCellHeight)
 
-      // Texto centrado dentro de la celda
-      doc.setFont('helvetica', 'bold')
-      doc.setFontSize(13)
-      doc.text(
-        'Información del Producto',
-        headerCellX + headerCellWidth / 2,
-        headerCellY + 6,
-        { align: 'center' }
-      )
+//       // Texto centrado dentro de la celda
+//       doc.setFont('helvetica', 'bold')
+//       doc.setFontSize(13)
+//       doc.text(
+//         'Información del Producto',
+//         headerCellX + headerCellWidth / 2,
+//         headerCellY + 6,
+//         { align: 'center' }
+//       )
 
-      yPosition += headerCellHeight + 4
+//       yPosition += headerCellHeight + 4
 
 
-    // --- TABLA GRANDE QUE CONTIENE TODO ---
-    const bigTableY = yPosition
-    const bigTableHeight = 103 // Altura total para contener toda la información
+//     // --- TABLA GRANDE QUE CONTIENE TODO ---
+//     const bigTableY = yPosition
+//     const bigTableHeight = 103 // Altura total para contener toda la información
 
-    doc.rect(tableX, bigTableY, tableWidth, bigTableHeight)
+//     doc.rect(tableX, bigTableY, tableWidth, bigTableHeight)
 
-    yPosition += 5
+//     yPosition += 5
 
-    // Contenido del producto (centrado)
-    const productInfo = [
-      ['Producto:', 'Caja Ranurada'],
-      ['Código:', '21007852'],
-      ['Cantidad Solicitada:', '3,000'],
-      ['Cantidad Enviada:', '2,740'],
-      ['Orden de Producción:', '02158'],
-      ['Remisión Factura:', '3541']
-    ]
+//     // Contenido del producto (centrado)
+//     const productInfo = [
+//       ['Producto:', 'Caja Ranurada'],
+//       ['Código:', '21007852'],
+//       ['Cantidad Solicitada:', '3,000'],
+//       ['Cantidad Enviada:', '2,740'],
+//       ['Orden de Producción:', '02158'],
+//       ['Remisión Factura:', '3541']
+//     ]
 
-    doc.setFontSize(8)
-    doc.setFont('helvetica', 'normal')
+//     doc.setFontSize(8)
+//     doc.setFont('helvetica', 'normal')
 
-    productInfo.forEach((item, index) => {
-      doc.text(item[0], 105, yPosition + (index * 4), { align: 'right' })
-      doc.text(item[1], 107, yPosition + (index * 4))
-    })
+//     productInfo.forEach((item, index) => {
+//       doc.text(item[0], 105, yPosition + (index * 4), { align: 'right' })
+//       doc.text(item[1], 107, yPosition + (index * 4))
+//     })
 
-    yPosition += (productInfo.length * 4) + 2
+//     yPosition += (productInfo.length * 4) + 2
 
-    // --- LÍNEA SEPARADORA (DOBLE) DENTRO DE LA TABLA - MÁS CORTA ---
-    doc.setLineWidth(0.3)
-    const lineMargin = 5
-    doc.line(tableX + lineMargin, yPosition, tableX + tableWidth - lineMargin, yPosition)
-    doc.line(tableX + lineMargin, yPosition + 1.0, tableX + tableWidth - lineMargin, yPosition + 1.0)
+//     // --- LÍNEA SEPARADORA (DOBLE) DENTRO DE LA TABLA - MÁS CORTA ---
+//     doc.setLineWidth(0.3)
+//     const lineMargin = 5
+//     doc.line(tableX + lineMargin, yPosition, tableX + tableWidth - lineMargin, yPosition)
+//     doc.line(tableX + lineMargin, yPosition + 1.0, tableX + tableWidth - lineMargin, yPosition + 1.0)
 
-    yPosition += 5
+//     yPosition += 5
 
-    // Especificaciones técnicas - A LA DERECHA, UNO DEBAJO DEL OTRO
-    const specsInfo = [
-      ['Cartón Tipo:', 'Corrugado Kraft'],
-      ['Flauta:', 'C'],
-      ['Resistencia:', '32'],
-      ['Impresión Color:', 'GCMI 32']
-    ]
+//     // Especificaciones técnicas - A LA DERECHA, UNO DEBAJO DEL OTRO
+//     const specsInfo = [
+//       ['Cartón Tipo:', 'Corrugado Kraft'],
+//       ['Flauta:', 'C'],
+//       ['Resistencia:', '32'],
+//       ['Impresión Color:', 'GCMI 32']
+//     ]
 
-    doc.setFontSize(8)
+//     doc.setFontSize(8)
 
-    specsInfo.forEach((item, index) => {
-      doc.text(item[0], 70, yPosition + (index * 4), { align: 'right' })
-      doc.text(item[1], 80, yPosition + (index * 4))
-    })
+//     specsInfo.forEach((item, index) => {
+//       doc.text(item[0], 70, yPosition + (index * 4), { align: 'right' })
+//       doc.text(item[1], 80, yPosition + (index * 4))
+//     })
 
-    yPosition += (specsInfo.length * 4) + 3
+//     yPosition += (specsInfo.length * 4) + 3
 
-    // --- PRUEBAS (DOS COLUMNAS ALINEADAS) ---
-    const pruebas = [
-      ['Prueba de Resistencia', 'Aprobada'],
-      ['Prueba de Estiba', 'Aprobada'],
-      ['Prueba de Medidas', 'Aprobada'],
-      ['Pruebas de Color', 'Aprobada'],
-      ['Prueba de empaque', 'Aprobada'],
-      ['Fumigación de Partida', 'Realizada'],
-      ['Calidad', 'Certificado']
-    ]
+//     // --- PRUEBAS (DOS COLUMNAS ALINEADAS) ---
+//     const pruebas = [
+//       ['Prueba de Resistencia', 'Aprobada'],
+//       ['Prueba de Estiba', 'Aprobada'],
+//       ['Prueba de Medidas', 'Aprobada'],
+//       ['Pruebas de Color', 'Aprobada'],
+//       ['Prueba de empaque', 'Aprobada'],
+//       ['Fumigación de Partida', 'Realizada'],
+//       ['Calidad', 'Certificado']
+//     ]
 
-    doc.setFontSize(8)
+//     doc.setFontSize(8)
 
-    const pruebaCol1X = 70
-    const pruebaCol2X = 120
+//     const pruebaCol1X = 70
+//     const pruebaCol2X = 120
 
-    doc.setFont('helvetica', 'bold')
+//     doc.setFont('helvetica', 'bold')
 
-    pruebas.forEach((prueba, index) => {
-      doc.text(prueba[0], pruebaCol1X, yPosition + (index * 4), { align: 'left' })
-      doc.text(prueba[1], pruebaCol2X, yPosition + (index * 4), { align: 'left' })
-    })
+//     pruebas.forEach((prueba, index) => {
+//       doc.text(prueba[0], pruebaCol1X, yPosition + (index * 4), { align: 'left' })
+//       doc.text(prueba[1], pruebaCol2X, yPosition + (index * 4), { align: 'left' })
+//     })
 
-    yPosition = bigTableY + bigTableHeight + 20
+//     yPosition = bigTableY + bigTableHeight + 20
 
-    // --- FIRMAS ---
-    const firmaY = yPosition
+//     // --- FIRMAS ---
+//     const firmaY = yPosition
 
-    // Certifica (Izquierda)
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(12)
-    doc.text('Certifica', 60, firmaY, { align: 'center' })
+//     // Certifica (Izquierda)
+//     doc.setFont('helvetica', 'normal')
+//     doc.setFontSize(12)
+//     doc.text('Certifica', 60, firmaY, { align: 'center' })
 
-    // Línea para firma calidad
-    doc.setLineWidth(0.3)
-    doc.line(35, firmaY + 8, 85, firmaY + 8)
-    doc.setFontSize(11)
-    doc.text('Nombre del de Calidad', 60, firmaY + 12, { align: 'center' })
+//     // Línea para firma calidad
+//     doc.setLineWidth(0.3)
+//     doc.line(35, firmaY + 8, 85, firmaY + 8)
+//     doc.setFontSize(11)
+//     doc.text('Nombre del de Calidad', 60, firmaY + 12, { align: 'center' })
 
-    // Valida (Derecha)
-    doc.setFontSize(12)
-    doc.text('Valida', 150, firmaY, { align: 'center' })
+//     // Valida (Derecha)
+//     doc.setFontSize(12)
+//     doc.text('Valida', 150, firmaY, { align: 'center' })
 
-    // Línea para firma validador
-    doc.line(125, firmaY + 8, 175, firmaY + 8)
-    doc.setFontSize(11)
-    doc.text('Nombre del Validador', 150, firmaY + 12, { align: 'center' })
+//     // Línea para firma validador
+//     doc.line(125, firmaY + 8, 175, firmaY + 8)
+//     doc.setFontSize(11)
+//     doc.text('Nombre del Validador', 150, firmaY + 12, { align: 'center' })
 
-    yPosition = firmaY + 20
+//     yPosition = firmaY + 20
 
-    // --- OBSERVACIONES Y REVISIÓN EN LA MISMA LÍNEA ---
-    const pageHeight = doc.internal.pageSize.getHeight()
-    const bottomY = pageHeight - 15
+//     // --- OBSERVACIONES Y REVISIÓN EN LA MISMA LÍNEA ---
+//     const pageHeight = doc.internal.pageSize.getHeight()
+//     const bottomY = pageHeight - 15
 
-    // Observaciones a la izquierda
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(8)
-    const observaciones = 'Observaciones: El Color es una Variable del papel que no afecta las características funcionales del cartón, ya que existen diferentes tonos de color apegados al estándar que en este caso es el kraft.'
+//     // Observaciones a la izquierda
+//     doc.setFont('helvetica', 'normal')
+//     doc.setFontSize(8)
+//     const observaciones = 'Observaciones: El Color es una Variable del papel que no afecta las características funcionales del cartón, ya que existen diferentes tonos de color apegados al estándar que en este caso es el kraft.'
 
-    // Texto de observaciones con ancho máximo
-    const splitObs = doc.splitTextToSize(observaciones, 140)
-    doc.text(splitObs, 20, bottomY)
+//     // Texto de observaciones con ancho máximo
+//     const splitObs = doc.splitTextToSize(observaciones, 140)
+//     doc.text(splitObs, 20, bottomY)
 
-    // Revisión a la derecha en la misma línea
-    doc.text('RC-CA-001', 195, bottomY, { align: 'right' })
-    doc.setFont('helvetica', 'bold')
-    doc.setFillColor(173, 216, 230) // Azul claro
-    doc.rect(165, bottomY + 2, 30, 5, 'F')
-    doc.setFont('helvetica', 'normal')
-    doc.text('Rev. 12-11/25', 195, bottomY + 5, { align: 'right' })
+//     // Revisión a la derecha en la misma línea
+//     doc.text('RC-CA-001', 195, bottomY, { align: 'right' })
+//     doc.setFont('helvetica', 'bold')
+//     doc.setFillColor(173, 216, 230) // Azul claro
+//     doc.rect(165, bottomY + 2, 30, 5, 'F')
+//     doc.setFont('helvetica', 'normal')
+//     doc.text('Rev. 12-11/25', 195, bottomY + 5, { align: 'right' })
 
-    // Guardar el PDF
-    const nombreArchivo = `certificado-calidad-250100.pdf`
-    doc.save(nombreArchivo)
-    mostrarAlerta('success', 'Certificado de Calidad generado correctamente')
+//     // Guardar el PDF
+//     const nombreArchivo = `certificado-calidad-250100.pdf`
+//     doc.save(nombreArchivo)
+//     mostrarAlerta('success', 'Certificado de Calidad generado correctamente')
 
-  } catch (error) {
-    console.error('Error en la generación del Certificado:', error)
-    mostrarAlerta('danger', 'Error al generar el Certificado: ' + error.message)
-  }
-}
+//   } catch (error) {
+//     console.error('Error en la generación del Certificado:', error)
+//     mostrarAlerta('danger', 'Error al generar el Certificado: ' + error.message)
+//   }
+// }
 
 
 onMounted(() => {

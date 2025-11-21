@@ -128,6 +128,12 @@
                 <option value="Administrador">Administrador</option>
                 <option value="Ventas">Ventas</option>
                 <option value="Usuario">Usuario</option>
+                <option value="Recepcion">Recepción</option>
+                <option value="Calidad">Calidad</option>
+                <option value="Operador">Operador</option>
+                <option value="Planeacion">Planeación</option>
+                <option value="Chofer">Chofer</option>
+                <option value="Supervisor">Supervisor</option>
               </select>
             </div>
 
@@ -269,7 +275,7 @@ const insertarUsuario = async () => {
   }
 
   try {
-    const response = await axios.post('http://localhost:3000/api/usuarios/insertar', form)
+    const response = await axios.post('https://backendgrupoeb.onrender.com/api/usuarios/insertar', form)
     console.log(response.data)
     Object.keys(form).forEach(key => {
       if (key === 'rol') {

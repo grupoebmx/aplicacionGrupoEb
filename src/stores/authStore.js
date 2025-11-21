@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
       this.error = null
 
       try {
-        const { data } = await axios.post('http://localhost:3000/api/auth/login', {
+        const { data } = await axios.post('https://backendgrupoeb.onrender.com/api/auth/login', {
           correo,
           contrasenia
         })

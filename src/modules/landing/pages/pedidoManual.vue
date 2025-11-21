@@ -505,7 +505,7 @@ const tintasProducto = ref([]);
 
 const obtenerClientes = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/clientes')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/clientes')
     clientes.value = res.data
   } catch (error) {
     console.error('Error al obtener clientes:', error)
@@ -520,7 +520,7 @@ const obtenerProductosPorEmpresa = async () => {
 
   try {
     const res = await axios.get(
-      `http://localhost:3000/api/productos/empresa/${selectedEmpresa.value.num_cliente}`
+      `https://backendgrupoeb.onrender.com/api/productos/empresa/${selectedEmpresa.value.num_cliente}`
     );
     productosEmpresa.value = res.data;
 
@@ -537,7 +537,7 @@ async function obtenerTintasPorProducto() {
 
   try {
     const res = await axios.get(
-      `http://localhost:3000/api/productos/tintas/${selectedProducto.value.identificador}`
+      `https://backendgrupoeb.onrender.com/api/productos/tintas/${selectedProducto.value.identificador}`
     );
     tintasProducto.value = res.data;
     console.log('Tintas del producto:', tintasProducto.value);
@@ -554,7 +554,7 @@ const obtenerPrecioFinal = async () => {
 
   try {
     const res = await axios.get(
-      `http://localhost:3000/api/detalle_cotizaciones/${selectedProducto.value.identificador}/${cantidad.value}`
+      `https://backendgrupoeb.onrender.com/api/detalle_cotizaciones/${selectedProducto.value.identificador}/${cantidad.value}`
     );
 
     if (!res.data || !res.data.precio_final) {
@@ -729,7 +729,7 @@ const insertarPedido = async () => {
 
     console.log("📦 Payload final:", JSON.stringify(payload, null, 2));
 
-    const { data } = await axios.post("http://localhost:3000/api/pedidos/insertar", payload);
+    const { data } = await axios.post("https://backendgrupoeb.onrender.com/api/pedidos/insertar", payload);
 
     console.log("Pedido insertado:", data);
     mostrarAlerta("success", `Pedido creado correctamente.`);

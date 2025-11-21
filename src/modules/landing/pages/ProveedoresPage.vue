@@ -39,7 +39,7 @@ const proveedores = ref([])
 const obtenerProveedores = async () => {
   const options = {
     method: 'GET',
-    url: 'http://localhost:3000/api/buscarTabla/proveedores',
+    url: 'https://backendgrupoeb.onrender.com/api/buscarTabla/proveedores',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -60,7 +60,7 @@ const borrarProveedor = async (idproveedores) => {
   console.log('Eliminando proveedor:', idproveedores)
   const options = {
     method: 'DELETE',
-    url: `http://localhost:3000/api/proveedores/borrar/${idproveedores}`,
+    url: `https://backendgrupoeb.onrender.com/api/proveedores/borrar/${idproveedores}`,
     headers: {
       'Content-Type': 'application/json',
     },

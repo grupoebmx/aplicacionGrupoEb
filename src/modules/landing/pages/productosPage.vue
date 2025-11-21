@@ -382,6 +382,39 @@
         <option value="KT">KT - KIT</option>
       </select>
     </div>
+
+    <!-- Empaque -->
+                <div class="table-cell p-1 border border-gray-300 rounded w-1/3">
+                  <div class="text-center text-xs font-semibold mb-1">Empaque</div>
+                  <input
+                    type="text"
+                    v-model="form.empaque"
+                    placeholder="Empaque"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight"
+                  />
+                </div>
+
+                <!-- Paq X -->
+                <div class="table-cell p-1 border border-gray-300 rounded w-1/3">
+                  <div class="text-center text-xs font-semibold mb-1">Paq X</div>
+                  <input
+                    type="number"
+                    v-model="form.paqX"
+                    placeholder="Paq X"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight"
+                  />
+                </div>
+
+                <!-- Cantidad -->
+                <div class="table-cell p-1 border border-gray-300 rounded w-1/3">
+                  <div class="text-center text-xs font-semibold mb-1">Cantidad</div>
+                  <input
+                    type="number"
+                    v-model="form.cantidad"
+                    placeholder="Cantidad"
+                    class="border border-gray-300 rounded-md px-2 py-1 h-8 text-sm w-full leading-tight"
+                  />
+                </div>
   </div>
 </div>
 
@@ -648,6 +681,9 @@ const form = reactive({
   largo_suaje: '',
   corto_sep: '',
   largo_sep: '',
+  empaque: '',
+  paqX: '',
+  cantidad: ''
 
 });
 
@@ -718,7 +754,7 @@ for (let [key, value] of formData.entries()) {
 
   try {
     const response = await axios.post(
-      'http://localhost:3000/api/productos/insertar',
+      'https://backendgrupoeb.onrender.com/api/productos/insertar',
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
@@ -762,7 +798,7 @@ const closeModal = () => {
 
 const obtenerTintas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/tintas')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/tintas')
     tintas.value = res.data
   } catch (error) {
     console.error('Error al obtener tintas:', error)
@@ -771,7 +807,7 @@ const obtenerTintas = async () => {
 
 const guardarTinta = async () => {
   try {
-    const res = await axios.post('http://localhost:3000/api/tintas/insertar', {
+    const res = await axios.post('https://backendgrupoeb.onrender.com/api/tintas/insertar', {
       gcmi: gcmi.value,
       nombre_tinta: nombreTinta.value
     })
@@ -794,7 +830,7 @@ const guardarTinta = async () => {
 // Función para traer clientes
 const obtenerClientes = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/clientes')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/clientes')
     clientes.value = res.data
   } catch (error) {
     console.error('Error al obtener clientes:', error)
@@ -805,7 +841,7 @@ const obtenerClientes = async () => {
 
 const obtenerMateriales = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/materiales')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/materiales')
     materiales.value = res.data
     console.log('Materiales cargados:', materiales.value)
   } catch (error) {

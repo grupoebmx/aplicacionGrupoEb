@@ -128,6 +128,15 @@
         <p class="text-center mt-2 font-semibold">Pagos</p>
       </router-link>
 
+      <router-link to="/Procesos" class="group flex flex-col items-center" v-if="tieneAcceso('Procesos')">
+        <img
+          src="@/assets/procesos.png"
+          alt="Cotizaciones"
+          class="w-24 md:w-32 h-24 md:h-32 object-contain cursor-pointer transform transition duration-300 group-hover:scale-110 group-hover:shadow-lg"
+        />
+        <p class="text-center mt-2 font-semibold">Procesos</p>
+      </router-link>
+
         <router-link
         to="/TableroGeneral"
         class="group flex flex-col items-center"
@@ -197,7 +206,7 @@ const tieneAcceso = (buttonName) => {
 
   // Si es Ventas, ve estos botones específicos
   if (auth.rolUsuario === 'Ventas') {
-    const botonesVentas = ['clientes', 'pedidosManual', 'listaPedidos', 'listaCotizaciones', 'TablaF', 'TableroGeneral']
+    const botonesVentas = ['clientes', 'pedidosManual', 'listaPedidos', 'listaCotizaciones', 'TablaF', 'TableroGeneral', 'Procesos']
     return botonesVentas.includes(buttonName)
   }
 

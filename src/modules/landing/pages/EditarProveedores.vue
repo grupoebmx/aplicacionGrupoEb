@@ -251,7 +251,7 @@ const form = reactive({
 const cargarProveedor = async () => {
   try {
     const { id } = route.params
-    const res = await axios.get(`http://localhost:3000/api/proveedor/${id}`)
+    const res = await axios.get(`https://backendgrupoeb.onrender.com/api/proveedor/${id}`)
 
     if (res.data && res.data.length > 0) {
       Object.assign(form, res.data[0])
@@ -266,7 +266,7 @@ const cargarProveedor = async () => {
 
 const ActualizarProveedor = async (json, idproveedores) => {
   try {
-    const res = await axios.put(`http://localhost:3000/api/proveedores/actualizar/${idproveedores}`, json)
+    const res = await axios.put(`https://backendgrupoeb.onrender.com/api/proveedores/actualizar/${idproveedores}`, json)
     console.log("Proveedor actualizado:", res.data)
     alert("Proveedor actualizado correctamente")
     router.push('/proveedores')

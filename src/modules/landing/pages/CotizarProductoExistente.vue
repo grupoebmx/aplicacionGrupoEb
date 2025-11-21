@@ -326,7 +326,7 @@ const tintasProducto = ref([]);
 
 const obtenerClientes = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/clientes')
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/clientes')
     clientes.value = res.data
   } catch (error) {
     console.error('Error al obtener clientes:', error)
@@ -341,7 +341,7 @@ const obtenerProductosPorEmpresa = async () => {
 
   try {
     const res = await axios.get(
-      `http://localhost:3000/api/productos/empresa/${selectedEmpresa.value}`
+      `https://backendgrupoeb.onrender.com/api/productos/empresa/${selectedEmpresa.value}`
     )
     productosEmpresa.value = res.data
     console.log('✅ Productos cargados:', res.data)
@@ -358,7 +358,7 @@ async function obtenerTintasPorProducto() {
   if (!selectedProducto.value) return;
 
   try {
-    const res = await axios.get(`http://localhost:3000/api/productos/tintas/${selectedProducto.value}`);
+    const res = await axios.get(`https://backendgrupoeb.onrender.com/api/productos/tintas/${selectedProducto.value}`);
     tintasProducto.value = res.data;
     console.log('Tintas del producto:', tintasProducto.value);
   } catch (error) {
@@ -708,7 +708,7 @@ const precioTinta= ref({
 
 const obtenerPreciosTintas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/tinta_cantidad');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/tinta_cantidad');
     const data = res.data;
     precioTinta.value = {
       precioTinta1: parseFloat(data.find(d => d.id === 1)?.precio || 0),
@@ -770,7 +770,7 @@ const porcentajes = ref({
 
 const obtenerPorcentaje = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/porcentajeCantidad');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/porcentajeCantidad');
     const data = res.data;
 
     porcentajes.value = {
@@ -836,7 +836,7 @@ const precioMaquinas = ref({
 
 const obtenerPreciosMaquinas = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/maquina_cantidad');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/maquina_cantidad');
     const data = res.data;
     precioMaquinas.value = {
       precioMaquina1: parseFloat(data.find(d => d.id === 1)?.precio || 0),
@@ -888,7 +888,7 @@ const precioPegado = ref({
 
 const obtenerPreciosPegado = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/pegado_cantidad');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/pegado_cantidad');
     const data = res.data;
     precioPegado.value = {
       precioPegado1: parseFloat(data.find(d => d.id === 1)?.precio || 0),
@@ -940,7 +940,7 @@ const fijosValor = ref({
 
 const obtenerFijos = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/fijos_cantidad');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/fijos_cantidad');
     const data = res.data;
 
     fijosValor.value = {
@@ -990,7 +990,7 @@ const envioValor = ref({
 
 const obtenerEnvio = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/envio_cantidad');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/envio_cantidad');
     const data = res.data;
 
     envioValor.value = {
@@ -1044,7 +1044,7 @@ const obtenerUtilidad = async () => {
       cantidad: parseInt(cantidad.value)
     }
 
-    const res = await axios.post('http://localhost:3000/api/utilidad/calcular', payload)
+    const res = await axios.post('https://backendgrupoeb.onrender.com/api/utilidad/calcular', payload)
     const data = res.data
 
     utilidad.value = data.precioUtilidad
@@ -1086,7 +1086,7 @@ async function insertarCotizacion() {
   };
 
   try {
-    const res = await axios.post('http://localhost:3000/api/cotizaciones/insertar', payload);
+    const res = await axios.post('https://backendgrupoeb.onrender.com/api/cotizaciones/insertar', payload);
     const idCotizacion = res.data.idCotizacion;
     console.log('ID cotización recuperada:', idCotizacion);
 
@@ -1110,7 +1110,7 @@ async function insertarCotizacion() {
 
 const obtenerInfoPDF = async (idCotizacion) => {
   try {
-    const response = await axios.get(`http://localhost:3000/api/cotizaciones/detalle/${idCotizacion}`);
+    const response = await axios.get(`https://backendgrupoeb.onrender.com/api/cotizaciones/detalle/${idCotizacion}`);
 
     if (response.data && response.data.length > 0) {
       return response.data;

@@ -101,8 +101,8 @@ const obtenerCotizaciones = async () => {
   try {
 
     const [cotRes, clientesRes] = await Promise.all([
-      axios.get('http://localhost:3000/api/buscarTabla/cotizaciones'),
-      axios.get('http://localhost:3000/api/buscarTabla/clientes'),
+      axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/cotizaciones'),
+      axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/clientes'),
     ]);
 
 
@@ -124,7 +124,7 @@ const obtenerCotizaciones = async () => {
         .map(async (c) => {
           // Obtener productos de la cotización
           const { data: productosCot } = await axios.get(
-            `http://localhost:3000/api/detalleCotizaciones/${c.id}`
+            `https://backendgrupoeb.onrender.com/api/detalleCotizaciones/${c.id}`
           );
 
           // Guardar detalles completos por id de cotización
@@ -163,7 +163,7 @@ const cotizaciones = computed(() => {
 const borrarCotizacion = async (id) => {
 
   try {
-    await axios.delete(`http://localhost:3000/api/cotizaciones/borrar/${id}`);
+    await axios.delete(`https://backendgrupoeb.onrender.com/api/cotizaciones/borrar/${id}`);
     mostrarAlerta('success', 'Cotización eliminada correctamente');
 
 

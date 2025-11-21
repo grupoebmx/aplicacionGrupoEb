@@ -89,7 +89,7 @@ const registroAEliminar = ref(null)
 // --- Obtener registros ---
 const obtenerRegistros = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/facturacion-envio/todos')
+    const res = await fetch('https://backendgrupoeb.onrender.com/api/facturacion-envio/todos')
     facturas.value = await res.json()
   } catch (error) {
     console.error('Error al obtener registros:', error)
@@ -107,7 +107,7 @@ const confirmarEliminar = async () => {
   const numero_pedido = registroAEliminar.value
 
   try {
-    await fetch(`http://localhost:3000/api/facturacion-envio/eliminar/${numero_pedido}`, {
+    await fetch(`https://backendgrupoeb.onrender.com/api/facturacion-envio/eliminar/${numero_pedido}`, {
       method: 'DELETE',
     })
     registroAEliminar.value = null
