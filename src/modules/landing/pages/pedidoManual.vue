@@ -910,108 +910,117 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
     yPosition += 15
 
     // --- TABLA PRODUCTOS (REDUCIDA) ---
-    const headers = [
-      'Cantidad',
-      'Producto',
-      'Medidas',
-      'Tintas',
-      'Material',
-      'Flauta',
-      'ETC',
-      'Precio Unitario',
-      'Importe',
-    ]
+const headers = [
+  'Cantidad',
+  'Producto',
+  'Medidas',
+  'Tintas',
+  'Material',
+  'Flauta',
+  'ETC',
+  'Precio Unitario',
+  'Importe',
+]
 
-    const widths = [18, 30, 22, 30, 18, 18, 18, 18, 18] // Eliminé un 18 (era 10 elementos, ahora 9)
-    const yStart = yPosition + 1
-    let x = 10
-    doc.setFontSize(10)
-    doc.setFont('helvetica', 'bold')
+const widths = [18, 30, 22, 40, 18, 15, 10, 18, 18]
+const yStart = yPosition + 1
+let x = 10
+doc.setFontSize(8)
+doc.setFont('helvetica', 'bold')
 
-    headers.forEach((h, i) => {
-      doc.rect(x, yStart, widths[i], 7)
-      let textoAjustado = h
-      if (h === 'Precio Unitario') {
-        textoAjustado = 'P.Unitario'
-      }
-      doc.text(textoAjustado, x + 1, yStart + 4)
-      x += widths[i]
-    })
+headers.forEach((h, i) => {
+  doc.rect(x, yStart, widths[i], 7)
+  let textoAjustado = h
+  if (h === 'Precio Unitario') {
+    textoAjustado = 'P.Unitario'
+  }
+  doc.text(textoAjustado, x + 1, yStart + 4)
+  x += widths[i]
+})
 
-    // Dibujar filas dinámicas
-    let yFila = yStart + 7
-    const maxFilas = 11
-    const productosMostrar = productosAgregados.value.slice(0, maxFilas)
+// Dibujar filas dinámicas
+let yFila = yStart + 7
+const maxFilas = 11
+const productosMostrar = productosAgregados.value.slice(0, maxFilas)
 
-    for (let i = 0; i < productosMostrar.length; i++) {
-      const producto = productosMostrar[i]
-      x = 10
+for (let i = 0; i < productosMostrar.length; i++) {
+  const producto = productosMostrar[i]
 
-      // Dibujar celdas
-      widths.forEach((w) => {
-        doc.rect(x, yFila, w, 7)
-        x += w
-      })
+  // Asegurar que todos los valores sean strings
+  const cantidad = String(producto.cantidad || '')
+  const productoNombre = String(producto.producto || '')
+  const medidas = String(producto.medidas || '')
+  const tintas = String(producto.tintas || '')
+  const material = String(producto.nombre_material || '')
+  const flauta = String(producto.material_flauta || '')
+  const etc = String(producto.material_resistencia || '')
+  const precioFinal = Number(producto.precioUnitario) || 0
+  const importe = (Number(producto.cantidad) || 0) * precioFinal
 
-      // Llenar datos del producto
-      x = 10
-      doc.setFont('helvetica', 'normal')
-      doc.setFontSize(8)
+  // ✅ NUEVO: Formatear tintas con saltos de línea
+  let tintasFormateadas = tintas
+  if (tintas.includes(',')) {
+    tintasFormateadas = tintas.split(',').map(t => t.trim()).join('\n')
+  }
 
-      // Asegurar que todos los valores sean strings
-      const cantidad = String(producto.cantidad || '')
-      const productoNombre = String(producto.producto || '')
-      const medidas = String(producto.medidas || '')
-      const tintas = String(producto.tintas || '')
-      const material = String(producto.nombre_material || '')
-      const flauta = String(producto.material_flauta || '')
-      const etc = String(producto.material_resistencia || '')
-      const precioFinal = Number(producto.precioUnitario) || 0
-      const importe = (Number(producto.cantidad) || 0) * precioFinal
+  // ✅ NUEVO: Dividir texto en múltiples líneas
+  doc.setFontSize(8)
+  const tintasLineas = doc.splitTextToSize(tintasFormateadas, widths[3] - 2)
+  const numLineas = tintasLineas.length
+  const alturaFila = Math.max(7, numLineas * 3.5 + 3)
 
-      // Cantidad
-      doc.text(cantidad, x + 2, yFila + 4)
-      x += widths[0]
+  // ✅ MODIFICADO: Dibujar celdas con altura dinámica
+  x = 10
+  widths.forEach((w) => {
+    doc.rect(x, yFila, w, alturaFila)
+    x += w
+  })
 
-      // Producto
-      doc.text(productoNombre, x + 1, yFila + 4)
-      x += widths[1]
+  // Llenar datos del producto
+  x = 10
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(8)
 
-      // Medidas
-      doc.text(medidas, x + 1, yFila + 4)
-      x += widths[2]
+  // Cantidad
+  doc.text(cantidad, x + 2, yFila + 4)
+  x += widths[0]
 
-      // Tintas
-      doc.text(tintas, x + 1, yFila + 4)
-      x += widths[3]
+  // Producto
+  doc.text(productoNombre, x + 1, yFila + 4)
+  x += widths[1]
 
-      // Material
-      doc.text(material, x + 1, yFila + 4)
-      x += widths[4]
+  // Medidas
+  doc.text(medidas, x + 1, yFila + 4)
+  x += widths[2]
 
-      // Color - ELIMINADO (saltamos esta columna)
-      // doc.text(color, x + 1, yFila + 4)
-      // x += widths[5]
+  // ✅ MODIFICADO: Tintas (múltiples líneas)
+  doc.text(tintasLineas, x + 1, yFila + 4)
+  x += widths[3]
 
-      // Flauta
-      doc.text(flauta, x + 1, yFila + 4)
-      x += widths[5] // Ahora es el índice 5 (antes era 6)
+  // Material
+  doc.text(material, x + 1, yFila + 4)
+  x += widths[4]
 
-      // ETC
-      doc.text(etc, x + 1, yFila + 4)
-      x += widths[6] // Ahora es el índice 6 (antes era 7)
+  // Flauta
+  doc.text(flauta, x + 1, yFila + 4)
+  x += widths[5]
 
-      // Precio Unitario
-      doc.text(formatoMoneda(precioFinal), x + 1, yFila + 4)
-      x += widths[7] // Ahora es el índice 7 (antes era 8)
+  // ETC
+  doc.text(etc, x + 1, yFila + 4)
+  x += widths[6]
 
-      // Importe
-      doc.text(formatoMoneda(importe), x + 1, yFila + 4)
+  // Precio Unitario
+  doc.text(formatoMoneda(precioFinal), x + 1, yFila + 4)
+  x += widths[7]
 
-      yFila += 7
-    }
+  // Importe
+  doc.text(formatoMoneda(importe), x + 1, yFila + 4)
 
-    yPosition = 190
+  // ✅ MODIFICADO: Incrementar con altura dinámica
+  yFila += alturaFila
+}
+
+yPosition = 190
     // --- OBSERVACIONES Y TOTALES ---
     doc.rect(10, yPosition, 140, 33)
     doc.setFontSize(12)

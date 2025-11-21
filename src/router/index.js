@@ -32,14 +32,17 @@ const router = createRouter({
     {path: '/procesoCompra', name:'procesoCompra', component:()=> import('@/modules/landing/pages/ProcesoCompra.vue'), meta: { rol: ['Direccion', 'Gerente'] }},
     {path: '/pedidosManual', name:'pedidosManual', component:()=> import('@/modules/landing/pages/pedidoManual.vue'), meta: { rol: ['Direccion', 'Gerente', 'Ventas'] }},
     {path: '/pagosPedidos', name:'pagosPedidos', component:()=> import('@/modules/landing/pages/pagosPedidos.vue'),meta: { rol: ['Direccion', 'Administrador', 'Gerente'] }},
-    {path: '/facturacion', name: 'facturacion', component: () => import('@/modules/landing/pages/faturacionPage.vue')},
     {path: '/TablaF', name: 'TablaF', component: () => import('@/modules/landing/pages/facturatablaPage.vue'), meta: { rol: ['Direccion', 'Gerente', 'Ventas'] }},
     {path: '/editar-factura/:numero_pedido', name: 'EditarFactura', component: () => import('@/modules/landing/pages/editarfactuPage.vue'), meta: { rol: ['Direccion', 'Gerente', 'Ventas'] }},
     {path: '/TableroGeneral', name: 'TableroGeneral', component: () => import('@/modules/landing/pages/TableroGeneral.vue'), meta: { rol: ['Direccion', 'Gerente', 'Ventas'] }},
     {path: '/ordenProduccion/:id',name: 'ordenProduccion', component: () => import('@/modules/landing/pages/oredenproduccionPage.vue'), meta: { rol: ['Direccion', 'Gerente', 'Ventas'] }},
     {path: '/Procesos', name: 'Procesos', component: () => import('@/modules/landing/pages/ListaprocesosPage.vue'), meta: { rol: ['Direccion', 'Gerente', 'Ventas'] }},
-  ]
+     ]
 
+    },
+
+    {
+    path: '/facturacion', name: 'facturacion', component: () => import('@/modules/landing/pages/faturacionPage.vue'),
     },
 
     // Auth

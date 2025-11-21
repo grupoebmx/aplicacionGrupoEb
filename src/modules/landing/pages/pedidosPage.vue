@@ -854,7 +854,7 @@ const continuarGeneracionPDF = (doc, yPosition, img, no_pedido) => {
       const cantidad = String(producto.cantidad || '')
       const productoNombre = String(producto.producto || '')
       const medidas = String(producto.medidas || '')
-      const cantidadTintas = Array.isArray(producto.tintas) ? producto.tintas.length : 0
+      const cantidadTintas = (producto.tintas) ? producto.tintas.length : 0
       const tintas = String(cantidadTintas) + (cantidadTintas === 1 ? ' tinta' : ' tintas')
       const material = String(producto.material_nombre || '')
       // const color = String(producto.color || '') // ELIMINADO

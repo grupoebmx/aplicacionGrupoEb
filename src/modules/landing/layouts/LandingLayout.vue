@@ -2,7 +2,7 @@
   <div class="flex flex-col h-screen">
     <!-- Header -->
   <!-- Header -->
-<header class="bg-black border-b border-gray-300 h-40 w-full flex items-center">
+  <header class="bg-black border-b border-gray-300 h-40 w-full flex items-center">
   <!-- Contenedor principal -->
   <div class="flex justify-between items-center w-full px-6">
 
