@@ -252,12 +252,14 @@
       <div class="flex justify-between gap-2">
         <input
           type="number"
+          step="any"
           v-model="form.anchoCarton"
           placeholder="ancho"
           class="border border-gray-300 rounded-md px-2 h-8 text-xs w-1/2 leading-tight"
         />
         <input
           type="number"
+          step="any"
           v-model="form.largoCarton"
           placeholder="largo"
           class="border border-gray-300 rounded-md px-2 h-8 text-xs w-1/2 leading-tight"
