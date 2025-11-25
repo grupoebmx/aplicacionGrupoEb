@@ -642,7 +642,7 @@ const formatoMoneda = (valor) => {
 
 const cargarIva = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/buscarTabla/iva');
+    const res = await axios.get('https://backendgrupoeb.onrender.com/api/buscarTabla/iva');
     const data = res.data;
 
     ivaPorcentaje.value = parseFloat(data.find(d => d.id === 1)?.porcentaje || 0);
