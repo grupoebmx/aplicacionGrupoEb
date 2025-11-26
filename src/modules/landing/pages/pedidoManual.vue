@@ -128,16 +128,7 @@
     <div class="flex flex-nowrap gap-2 overflow-x-auto mb-4">
       <!-- No. identifacion -->
 
-      <!-- Cantidad -->
-      <div class="flex-1 min-w-[80px]">
-        <label class="label">Cantidad</label>
-        <input
-          type="number"
-          class="input w-full"
-          v-model="cantidad"
-          @input="obtenerPrecioFinal"
-        />
-      </div>
+
 
       <!-- Producto -->
       <div class="flex-1 min-w-[200px]">
@@ -156,6 +147,17 @@
             {{ producto.producto }}
           </option>
         </select>
+      </div>
+
+        <!-- Cantidad -->
+      <div class="flex-1 min-w-[80px]">
+        <label class="label">Cantidad</label>
+        <input
+          type="number"
+          class="input w-full"
+          v-model="cantidad"
+          @input="obtenerPrecioFinal"
+        />
       </div>
 
       <!-- Medidas -->

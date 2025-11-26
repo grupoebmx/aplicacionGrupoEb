@@ -117,16 +117,16 @@
       <table class="w-full border border-gray-300 mt-2 rounded text-xs">
         <thead>
           <tr class="bg-gray-200 text-center">
-            <th class="p-1 border">Largo cm</th>
             <th class="p-1 border">Ancho cm</th>
+            <th class="p-1 border">Largo cm</th>
             <th class="p-1 border">Alto cm</th>
             <th class="p-1 border">Ceja cm</th>
           </tr>
         </thead>
         <tbody>
           <tr class="text-center">
-            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model="largo" /></td>
             <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model="ancho" /></td>
+            <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model="largo" /></td>
             <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model="alto" /></td>
             <td class="p-1 border"><input class="w-full px-1 py-0.5 border rounded bg-white" v-model.number="ceja" /></td>
           </tr>
@@ -366,8 +366,8 @@
                <div class="table-cell p-1 border border-gray-300 rounded w-2/6">
                <div class="text-center text-xs font-semibold mb-1">Medidas internas</div>
                <div class="flex justify-between gap-2">
-               <input type="number" placeholder="Largo" class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" :value="largoInt" />
                <input type="number" placeholder="Ancho" class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" :value="anchoInt" />
+               <input type="number" placeholder="Largo" class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" :value="largoInt" />
                <input type="number" placeholder="Alto"  class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" :value="altoInt" />
                <input type="number" placeholder="Ceja"  class="border border-gray-300 rounded-md px-2 py-1 h-8 text-xs w-1/4 leading-tight" :value="cejaInt" />
                </div>
@@ -397,18 +397,20 @@
   <div class="table-cell p-1 border border-gray-300 rounded w-[25%]">
     <div class="text-center text-xs font-semibold mb-1">Dimensiones Cartón</div>
     <div class="flex justify-between gap-2">
+        <input
+        type="number"
+        :value="altoCarton"
+        placeholder="ancho"
+        class="border border-gray-300 rounded-md px-2 h-7 text-xs w-1/2 leading-tight"
+      />
+
       <input
         type="number"
         :value="largoCarton"
         placeholder="largo"
         class="border border-gray-300 rounded-md px-2 h-7 text-xs w-1/2 leading-tight"
       />
-      <input
-        type="number"
-        :value="altoCarton"
-        placeholder="ancho"
-        class="border border-gray-300 rounded-md px-2 h-7 text-xs w-1/2 leading-tight"
-      />
+
     </div>
   </div>
 

@@ -287,7 +287,7 @@ import axios from 'axios'
 const route = useRoute()
 
 // Fecha
-const fecha = new Date().toLocaleDateString()
+const fecha = new Date().toISOString().substring(0, 10)
 
 const filasMateriales = ref([]);
 
@@ -461,17 +461,17 @@ const total = computed(() => subtotal.value + iva.value)
 
 const guardarOrdenCompra = async () => {
   try {
+    const idPedido = route.params.id;
 
-     const idPedido = route.params.id;
     // Validaciones básicas
     if (!proveedorSeleccionado.value) {
-      return mostrarAlerta("warning","Selecciona un proveedor");
+      return mostrarAlerta("warning", "Selecciona un proveedor");
     }
     if (!filasMateriales.value.length) {
-      return mostrarAlerta("warning","No hay materiales para registrar");
+      return mostrarAlerta("warning", "No hay materiales para registrar");
     }
 
-    // Construir el array de productos para enviar
+    // Construir el array de productos
     const materiales = filasMateriales.value.map((fila) => ({
       id_producto: fila.id_producto,
       area: Number(fila.area),
@@ -486,21 +486,45 @@ const guardarOrdenCompra = async () => {
       id_pedido: idPedido,
       id_proveedor: proveedorSeleccionado.value,
       subtotal: Number(subtotal.value),
-      fecha:fecha,
+      fecha: fecha, // Se envía en formato DD/MM/YYYY - el backend lo convertirá
       iva: Number(iva.value),
       total_orden: Number(total.value),
       materiales,
     };
 
-    // Enviar al backend
-    const { data } = await axios.post("https://backendgrupoeb.onrender.com/api/ordenes/insertar", payload);
+    console.log('📤 Enviando orden:', payload);
 
-    console.log("Orden de compra guardada:", data);
-    mostrarAlerta("success",`Orden de compra registrada correctamente`);
-    generarPDF(data.idOrden)
+    // Enviar al backend
+    const { data } = await axios.post(
+      'https://backendgrupoeb.onrender.com/api/ordenes/insertar',
+      payload
+    );
+
+    console.log("✅ Orden de compra guardada:", data);
+    mostrarAlerta("success", `Orden de compra #${data.idOrden} registrada correctamente`);
+
+    // Generar PDF
+    generarPDF(data.idOrden);
+
   } catch (error) {
-    console.error("Error al guardar la orden de compra:", error);
-    mostrarAlerta("danger","Ocurrió un error al guardar la orden de compra");
+    console.error("❌ Error completo:", error);
+    console.error("Respuesta del servidor:", error.response?.data);
+
+    // Mostrar mensaje específico del error
+    let mensaje = "Ocurrió un error al guardar la orden de compra";
+
+    if (error.response?.data?.message) {
+      mensaje = error.response.data.message;
+    } else if (error.message) {
+      mensaje = error.message;
+    }
+
+    mostrarAlerta("danger", mensaje);
+
+    // Si hay detalles adicionales, mostrarlos en consola
+    if (error.response?.data?.detalle) {
+      console.error("Detalle adicional:", error.response.data.detalle);
+    }
   }
 };
 
