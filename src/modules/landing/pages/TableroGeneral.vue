@@ -47,6 +47,13 @@
         >
           Actualizar
         </button>
+        <button
+        @click="limpiarOrdenesCompletadas"
+        class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md"
+        title="Ocultar órdenes de producción completadas con más de 7 días"
+      >
+        Limpiar Completadas
+      </button>
       </div>
 
       <!-- Tabla -->
@@ -87,6 +94,9 @@
                 </th>
                 <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                   Almacén
+                </th>
+                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                  Envío
                 </th>
                 <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                   Acciones
@@ -141,7 +151,7 @@
 
                 <!-- Procesos -->
                 <td
-                  v-for="proceso in ['recepcion', 'impresion', 'suaje', 'pegado', 'armado', 'almacen']"
+                  v-for="proceso in ['recepcion', 'impresion', 'suaje', 'pegado', 'armado', 'almacen', 'envio']"
                   :key="proceso"
                   class="px-3 py-4 text-center"
                 >
@@ -236,6 +246,27 @@ const cargarDatos = async () => {
   } catch (error) {
     console.error('❌ Error al cargar datos:', error)
     mostrarAlerta('danger', 'Error al cargar datos del tablero')
+  }
+}
+
+// Limpiar órdenes de producción completadas con más de 7 días
+const limpiarOrdenesCompletadas = async () => {
+  if (!confirm('¿Estás seguro de ocultar las órdenes de producción completadas con más de 7 días?\n\nEsta acción marcará las órdenes como eliminadas y ya no aparecerán en el tablero.')) {
+    return
+  }
+
+  try {
+    const { data } = await axios.post('https://backendgrupoeb.onrender.com/api/ordenproduccion/limpiar-completadas')
+
+    if (data.eliminadas > 0) {
+      mostrarAlerta('success', ` Se ocultaron ${data.eliminadas} orden(es) de producción completada(s) con más de 7 días`)
+      await cargarDatos()
+    } else {
+      mostrarAlerta('primary', 'No hay órdenes de producción completadas con más de 7 días para ocultar')
+    }
+  } catch (error) {
+    console.error('❌ Error al limpiar órdenes:', error)
+    mostrarAlerta('danger', 'Error al ocultar órdenes completadas: ' + (error.response?.data?.message || error.message))
   }
 }
 

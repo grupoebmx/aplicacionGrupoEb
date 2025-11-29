@@ -15,6 +15,13 @@
     <div class="w-full mt-8 mx-20 bg-white p-8 rounded-lg shadow-md">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-2xl font-bold font-[Inter]">Pedidos</h2>
+            <button
+        @click="limpiarPedidosCompletados"
+        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md"
+        title="Ocultar pedidos completamente finalizados con más de 7 días"
+      >
+        Limpiar Finalizados
+      </button>
       </div>
 
       <TablaPedidos
@@ -217,6 +224,27 @@ const mostrarAlerta = (tipo, mensaje) => {
       break
     default:
       alert(mensaje)
+  }
+}
+
+// Limpiar pedidos completamente finalizados
+const limpiarPedidosCompletados = async () => {
+  if (!confirm('¿Estás seguro de ocultar los pedidos completamente finalizados con más de 7 días?\n\nSe ocultarán los pedidos donde TODAS sus órdenes de producción estén completadas hace más de 7 días.')) {
+    return
+  }
+
+  try {
+    const { data } = await axios.post('https://backendgrupoeb.onrender.com/api/pedidos/limpiar-completados')
+
+    if (data.ocultados > 0) {
+      mostrarAlerta('success', `Se ocultaron ${data.ocultados} pedido(s) completamente finalizados`)
+      await obtenerPedidos() // Recargar pedidos
+    } else {
+      mostrarAlerta('warning', ' No hay pedidos completamente finalizados con más de 7 días')
+    }
+  } catch (error) {
+    console.error('❌ Error al limpiar pedidos:', error)
+    mostrarAlerta('error', 'Error al ocultar pedidos: ' + (error.response?.data?.message || error.message))
   }
 }
 

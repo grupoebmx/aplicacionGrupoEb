@@ -401,13 +401,13 @@ const generarPDFConDatos = (producto, imagen, noOrden, imagenF) => {
   doc.rect(startX, startY, widthProducto, heightProducto, 'F')
   doc.rect(startX, startY, widthProducto, heightProducto)
   doc.setFont('helvetica', 'bold')
-  doc.setFontSize(10)
+  doc.setFontSize(8)
   doc.text('Producto', startX + 2, startY + 5)
 
   // Descripción del producto - DATO REAL
   doc.rect(startX, startY + heightProducto, widthProducto, 9)
   doc.setFont('helvetica', 'normal')
-  doc.setFontSize(9)
+  doc.setFontSize(6)
   const textoProducto = producto.producto || ''
   doc.text(textoProducto, startX + 2, startY + heightProducto + 7)
 
@@ -443,7 +443,7 @@ const generarPDFConDatos = (producto, imagen, noOrden, imagenF) => {
   valoresMedidas.forEach((texto, i) => {
     doc.rect(startX2 + i * colWidthMedidas, startY + 10, colWidthMedidas, 5)
     doc.setFont('helvetica', 'normal')
-    doc.setFontSize(8)
+    doc.setFontSize(6)
     doc.text(texto, startX2 + i * colWidthMedidas + 2, startY + 10 + 4.5)
   })
 
