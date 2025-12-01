@@ -313,12 +313,12 @@
       <tr class="border-b border-gray-300">
         <td class="py-2 pr-3 text-right font-medium">IVA:</td>
         <td class="py-2">
-          <input
-  :value="formatoMoneda(iva)"
-  type="text"
-  class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
-  readonly
-/>
+                  <input
+          :value="formatoMoneda(iva)"
+          type="text"
+          class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm bg-gray-50"
+          readonly
+        />
 
         </td>
       </tr>
